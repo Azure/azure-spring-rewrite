@@ -7,6 +7,9 @@ package com.azure.spring.migration.openrewrite.java.search;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
@@ -19,15 +22,22 @@ import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.JavaType.Primitive;
 import org.openrewrite.marker.SearchResult;
 
+@Value
+@EqualsAndHashCode(callSuper = false)
 public final class FindLiterals extends Recipe {
     @Option(
             displayName = "Pattern",
             description = "A regular expression pattern to match literals against.",
-            example = "file://"
+            example = "file://",
+            required = true
     )
-    private final String pattern;
+    String pattern;
 
-    private final String mark;
+    @Option(displayName = "mark",
+            description = "Mark in matched literals",
+            example = "",
+            required = false)
+    String mark;
 
     public String getDisplayName() {
         return "Find literals";
@@ -68,10 +78,6 @@ public final class FindLiterals extends Recipe {
         };
     }
 
-    public FindLiterals(final String pattern, final String mark) {
-        this.pattern = pattern;
-        this.mark = mark;
-    }
 
     public String getPattern() {
         return this.pattern;

@@ -40,13 +40,9 @@ dependencies {
     runtimeOnly("org.openrewrite.recipe:rewrite-migrate-java:1.15.0")
     runtimeOnly("org.openrewrite:rewrite-java-17:$rewriteVersion")
 
-    testImplementation("com.github.marschall:memoryfilesystem:latest.release")
-
-    // for generating properties migration configurations
-    testImplementation("io.github.classgraph:classgraph:latest.release")
     testImplementation("org.openrewrite:rewrite-java-17:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-migrate-java:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteVersion}")
+    testImplementation("org.openrewrite.recipe:rewrite-migrate-java:1.15.0")
+    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.32.0")
 
 }
 

@@ -12,26 +12,11 @@ public final class FindLiteralsTest implements RewriteTest {
                 spec -> spec.recipe(new FindLiterals("[A-z]:([\\\\][^\\n\\t]+)+|(\\\\\\\\([^\\\\\\,\\n\\t]+)\\\\\\S+)+","No window file url")),
                 java(
                         """
-                                   package org.springframework.samples.petclinic;
-                                   import java.io.File;
-                                   public class LocalFile {
-                                                                                      
-                                       public void test(){
-                                           File file = new File("c:\\\\temp\\\\d.text");
-                                       }
-                                   }
-                                                                                      
-                                """,
+                                File file = new File("c:\\\\temp\\\\d.text");
+                              """,
                         """
-                                  package org.springframework.samples.petclinic;
-                                   import java.io.File;
-                                   public class LocalFile {
-                                                                                      
-                                       public void test(){
-                                           File file = new File("c:\\\\temp\\\\d.text");
-                                       }
-                                   }
-                                """
+                                File file = new File(/*~~(No window file url)~~>*/"c:\\\\temp\\\\d.text");
+                              """
                 )
         );
     }
