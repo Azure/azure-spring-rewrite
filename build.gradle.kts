@@ -44,7 +44,6 @@ dependencies {
     testImplementation("org.openrewrite:rewrite-java-17:${rewriteVersion}")
     testImplementation("org.openrewrite.recipe:rewrite-migrate-java:1.15.0")
     testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.32.0")
-
 }
 
 
