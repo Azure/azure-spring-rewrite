@@ -60,7 +60,6 @@ public final class FindLiterals extends Recipe {
 
     public JavaVisitor<ExecutionContext> getVisitor() {
         final Pattern compiledPattern = Pattern.compile(this.pattern);
-//        final String mark = this.mark;
         return new JavaIsoVisitor<ExecutionContext>() {
             public J.Literal visitLiteral(J.Literal literal, ExecutionContext ctx) {
                 if (literal.getValueSource() != null) {
