@@ -66,12 +66,10 @@ public final class FindLiterals extends Recipe {
                     if (literal.getType() == Primitive.String && compiledPattern.matcher(literal.getValueSource().substring(1, literal.getValueSource().length() - 1)).matches()) {
                         return (J.Literal)SearchResult.found(literal,mark);
                     }
-
                     if (compiledPattern.matcher(literal.getValueSource()).matches()) {
                         return (J.Literal)SearchResult.found(literal,mark);
                     }
                 }
-
                 return literal;
             }
         };
