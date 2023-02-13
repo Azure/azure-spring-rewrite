@@ -27,7 +27,7 @@ publishing {
 
 
 // val rewriteVersion = rewriteRecipe.rewriteVersion.get()
-val rewriteVersion = "7.34.3"
+val rewriteVersion = "7.35.0"
 dependencies {
     implementation("org.openrewrite:rewrite-gradle:7.36.0-SNAPSHOT")
 
