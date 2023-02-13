@@ -12,15 +12,12 @@
 name: publish
 
 on:
-  pull_request:
-    branches: [ main ]
-    types:
-      - closed
+  release:
+    types: [ published ]
 
 jobs:
   publish:
     name: publish azure-spring-rewrite tp github package repository
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -32,8 +29,10 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
       - name: Publish package
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: publishAzure-spring-rewritePublicationToGitHubPackagesRepository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: $(echo "${GITHUB_REF}" | cut -d "/" -f3)
+        run: |
+          echo "New version: ${NEW_VERSION}"
+          echo "Github username: ${GITHUB_ACTOR}"
+          ./gradlew -Pversion=${NEW_VERSION} publishAzure-spring-rewritePublicationToGitHubPackagesRepository

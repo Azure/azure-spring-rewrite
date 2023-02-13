@@ -34,15 +34,15 @@ public class FindLiterals extends Recipe {
         required = false)
     String mark;
 
-    public @NonNull String getDisplayName() {
+    public String getDisplayName() {
         return "Find literals";
     }
 
-    public @NonNull String getDescription() {
+    public String getDescription() {
         return "Find literals matching a pattern.";
     }
 
-    public @NonNull Validated validate() {
+    public Validated validate() {
         return super.validate().and(Validated.test("pattern", "Must be a valid regular expression", this.pattern, (p) -> {
             try {
                 Pattern.compile(p);
@@ -53,10 +53,10 @@ public class FindLiterals extends Recipe {
         }));
     }
 
-    public @NonNull JavaVisitor<ExecutionContext> getVisitor() {
+    public JavaVisitor<ExecutionContext> getVisitor() {
         final Pattern compiledPattern = Pattern.compile(this.pattern);
         return new JavaIsoVisitor<ExecutionContext>() {
-            public J.@NonNull Literal visitLiteral(J.@NonNull Literal literal, @NonNull ExecutionContext ctx) {
+            public J. Literal visitLiteral(J. Literal literal,  ExecutionContext ctx) {
                 if (literal.getValueSource() != null) {
                     if (literal.getType() == Primitive.String && compiledPattern.matcher(literal.getValueSource().substring(1, literal.getValueSource().length() - 1)).matches()) {
                         return SearchResult.found(literal,mark);
@@ -75,7 +75,7 @@ public class FindLiterals extends Recipe {
         return this.pattern;
     }
 
-    public @NonNull String toString() {
+    public String toString() {
         return "FindLiterals(pattern=" + this.getPattern() + ")";
     }
 
