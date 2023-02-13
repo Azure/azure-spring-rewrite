@@ -4,7 +4,7 @@ plugins {
 
 group = "com.azure.spring.migration"
 description = "Recipe to migrate ASA"
-version = "0.1.0"
+version = "1.0.0"
 
 publishing {
     repositories {
@@ -12,8 +12,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/azure/azure-spring-rewrite")
             credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
