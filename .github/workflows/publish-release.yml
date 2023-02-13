@@ -9,11 +9,12 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: publish
+name: publish-release
 
 on:
   release:
     types: [ published ]
+
 
 jobs:
   publish:
@@ -26,13 +27,22 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+        uses: gradle/wrapper-validation-action@master
+
+
+      - run: echo "${GITHUB_REF}"
+
       - name: Publish package
+        uses: gradle/gradle-build-action@main
+        with:
+          arguments: -Prelease.useLastTag=true final
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEW_VERSION: $(echo "${GITHUB_REF}" | cut -d "/" -f3)
-        run: |
-          echo "New version: ${NEW_VERSION}"
-          echo "Github username: ${GITHUB_ACTOR}"
-          ./gradlew -Pversion=${NEW_VERSION} publishAzure-spring-rewritePublicationToGitHubPackagesRepository
+
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/

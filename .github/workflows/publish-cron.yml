@@ -9,18 +9,15 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: publish
+name: publish-cron
 
 on:
-  pull_request:
-    branches: [ main ]
-    types:
-      - closed
+  schedule:
+    - cron: '0 10 * * *'
 
 jobs:
   publish:
     name: publish azure-spring-rewrite tp github package repository
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -32,18 +29,22 @@ jobs:
           distribution: 'adopt'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+        uses: gradle/wrapper-validation-action@master
 
-      - name: Get latest release tag
-        id: latest_release_tag
-        run: echo "::set-output name=tag_name::$(git describe --abbrev=0 --tags)"
+      - run: git pull
 
-      - name: Set Gradle version
-        run: echo "version = '${{ steps.latest_release_tag.outputs.tag_name }}-snapshot'" > gradle.properties
+      - run: echo "$(git describe --tags --first-parent)"
+
+      - run: echo "$(git describe --tags --always --first-parent)"
+
+      - run: echo "$(git describe --tags --abbrev=0 --always --first-parent)"
+
+      - run: echo "$(git describe --tags --abbrev=0 --always)"
+
 
       - name: Publish package
+        uses: gradle/gradle-build-action@main
+        with:
+          arguments: snapshot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Github username: ${GITHUB_ACTOR}"
-          ./gradlew -Pversion=${env.version} publishAzure-spring-rewritePublicationToGitHubPackagesRepository

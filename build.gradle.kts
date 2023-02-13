@@ -23,7 +23,8 @@ publishing {
     }
 }
 
-
+project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
+project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
 // val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 val rewriteVersion = "7.35.0"
@@ -46,4 +47,10 @@ dependencies {
     testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.32.0")
 }
 
-
+nebulaPublishVerification {
+    ignore("org.openrewrite:rewrite-gradle")
+    ignore("org.openrewrite:rewrite-java")
+    ignore("org.openrewrite:rewrite-xml")
+    ignore("org.openrewrite:rewrite-properties")
+    ignore("org.openrewrite:rewrite-maven")
+}
