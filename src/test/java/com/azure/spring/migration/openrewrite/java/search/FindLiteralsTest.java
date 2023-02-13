@@ -9,7 +9,8 @@ public final class FindLiteralsTest implements RewriteTest {
     @Test
     void testFindLiteral() {
         rewriteRun(
-                spec -> spec.recipe(new FindLiterals("[A-z]:([\\\\][^\\n\\t]+)+|(\\\\\\\\([^\\\\\\,\\n\\t]+)\\\\\\S+)+","window file url")),
+                spec -> spec.recipe(new FindLiterals("[A-z]:([\\\\\\/][^\\n\\t]+)+|(\\\\\\\\([^\\\\\\,\\n\\t]+)"
+                    + "\\\\\\S+)+","TODO: this file system path is Microsoft Windows platform dependent")),
                 java(
                         """
                                   package org.springframework.samples.petclinic;
@@ -29,7 +30,7 @@ public final class FindLiteralsTest implements RewriteTest {
                                   public class LocalFile {
                                   
                                       public void test(){
-                                          File file = new File(/*~~(window file url)~~>*/"c:\\\\temp\\\\d.text");
+                                          File file = new File(/*~~(TODO: this file system path is Microsoft Windows platform dependent)~~>*/"c:\\\\temp\\\\d.text");
                                       }
                                   }
                                 """

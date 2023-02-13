@@ -25,8 +25,8 @@ tags:
   - mordernize
 recipeList:
   - com.azure.spring.migration.openrewrite.java.search.FindLiterals:
-      pattern: "[A-z]:([\\\\][^\\n\\t]+)+|(\\\\\\\\([^\\\\\\,\\n\\t]+)\\\\\\S+)+"
-      mark: window file url
+      pattern: [A-z]:([\\\/][^\n\t]+)+|(\\\\([^\\\,\n\t]+)\\\S+)+
+      mark: "TODO: this file system path is Microsoft Windows platform dependent"
 
 
 ---
