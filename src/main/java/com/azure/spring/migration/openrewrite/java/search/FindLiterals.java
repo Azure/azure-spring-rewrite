@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
@@ -35,15 +34,15 @@ public class FindLiterals extends Recipe {
         required = false)
     String mark;
 
-    public @NotNull String getDisplayName() {
+    public @NonNull String getDisplayName() {
         return "Find literals";
     }
 
-    public @NotNull String getDescription() {
+    public @NonNull String getDescription() {
         return "Find literals matching a pattern.";
     }
 
-    public @NotNull Validated validate() {
+    public @NonNull Validated validate() {
         return super.validate().and(Validated.test("pattern", "Must be a valid regular expression", this.pattern, (p) -> {
             try {
                 Pattern.compile(p);
@@ -54,10 +53,10 @@ public class FindLiterals extends Recipe {
         }));
     }
 
-    public @NotNull JavaVisitor<ExecutionContext> getVisitor() {
+    public @NonNull JavaVisitor<ExecutionContext> getVisitor() {
         final Pattern compiledPattern = Pattern.compile(this.pattern);
         return new JavaIsoVisitor<ExecutionContext>() {
-            public J.@NotNull Literal visitLiteral(J.@NotNull Literal literal, @NotNull ExecutionContext ctx) {
+            public J.@NonNull Literal visitLiteral(J.@NonNull Literal literal, @NonNull ExecutionContext ctx) {
                 if (literal.getValueSource() != null) {
                     if (literal.getType() == Primitive.String && compiledPattern.matcher(literal.getValueSource().substring(1, literal.getValueSource().length() - 1)).matches()) {
                         return SearchResult.found(literal,mark);
