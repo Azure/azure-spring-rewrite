@@ -16,17 +16,17 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 
-name: com.azure.spring.migration.openrewrite.WindowFile
-displayName: No Windows file in application
-description: No Windows file in application
+name: com.azure.spring.migration.openrewrite.WindowFilePath
+displayName: Remove Windows file path in application
+description: Find file system path which is Microsoft Windows platform dependent. It needs to be replaced with a Linux-style path
 tags:
   - cloud
   - azure
   - mordernize
 recipeList:
   - com.azure.spring.migration.openrewrite.java.search.FindLiterals:
-      pattern: "[A-z]:([\\\\][^\\n\\t]+)+|(\\\\\\\\([^\\\\\\,\\n\\t]+)\\\\\\S+)+"
-      mark: window file url
+      pattern: [A-z]:([\\\/][^\n\t]+)+|(\\\\([^\\\,\n\t]+)\\\S+)+
+      mark: "TODO ASA-WindowFilePath: this file system path is Microsoft Windows platform dependent"
 
 
 ---
@@ -73,7 +73,7 @@ description: Migrate to Spring Apps
 recipeList:
   - com.azure.spring.migration.openrewrite.Springboot_2_x
   - com.azure.spring.migration.openrewrite.SpringCloud_2021
-  - com.azure.spring.migration.openrewrite.WindowFile
+  - com.azure.spring.migration.openrewrite.WindowFilePath
 
 
 

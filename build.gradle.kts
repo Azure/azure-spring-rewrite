@@ -4,7 +4,6 @@ plugins {
 
 group = "com.azure.spring.migration"
 description = "Recipe to migrate ASA"
-version = "1.0.0"
 
 publishing {
     repositories {
