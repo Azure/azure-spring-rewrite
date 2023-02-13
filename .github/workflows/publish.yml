@@ -34,6 +34,7 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
-          arguments: publishAzure-spring-rewritePublicationToGitHubPackagesRepository
+          arguments: publishAzure-spring-rewritePublicationToGitHubPackagesRepository -Pversion=${NEW_VERSION}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: $(echo "${GITHUB_REF}" | cut -d "/" -f3)
