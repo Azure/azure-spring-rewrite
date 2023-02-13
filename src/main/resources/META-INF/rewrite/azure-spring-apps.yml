@@ -28,6 +28,41 @@ recipeList:
       pattern: "[A-z]:([\\\\][^\\n\\t]+)+|(\\\\\\\\([^\\\\\\,\\n\\t]+)\\\\\\S+)+"
       mark: window file url
 
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.Springboot_2_x
+displayName: Migrate to Spring boot 2.7.X
+description:  >
+  Migrate applications built on previous versions of Spring Boot to the latest Spring Boot 2.7 release.
+tags:
+  - spring boot
+  - azure
+  - mordernize
+recipeList:
+  - org.openrewrite.java.spring.boot2.SpringBoot1To2Migration
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.SpringCloud_2021
+displayName: Migrate to Spring Cloud 2021.0.X
+description:  >
+  Migrate to Spring Cloud 2021.0.X. This recipe will modify an application's build files.
+tags:
+  - spring cloud
+  - azure
+  - mordernize
+recipeList:
+  - org.openrewrite.maven.UpgradeDependencyVersion:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-dependencies
+      newVersion: 2021.0.X
+      overrideManagedVersion: true
+      # UpgradeLiteralDependencyVersion only apply to fixed literal version: a version that is not a variable or property or supplied indirectly by platform BOMs or similar means
+  - org.openrewrite.gradle.UpgradeLiteralDependencyVersion:
+      groupId: org.springframework.cloud
+      artifactId: spring-cloud-dependencies
+      newVersion: 2021.0.X
 ---
 ########################################################################################################################
 
@@ -36,17 +71,9 @@ name: com.azure.spring.migration.UpgradeToAzureSpringApps
 displayName: Migrate to Spring Apps
 description: Migrate to Spring Apps
 recipeList:
-  - org.openrewrite.java.spring.boot2.UpgradeSpringBoot_2_7
-  - org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_0
+  - com.azure.spring.migration.openrewrite.Springboot_2_x
+  - com.azure.spring.migration.openrewrite.SpringCloud_2021
   - com.azure.spring.migration.openrewrite.WindowFile
-  - org.openrewrite.FindSourceFiles:
-      filePattern: "*.dll"
-  - org.openrewrite.xml.ChangeTagAttribute:
-      elementName: "appender"
-      attributeName: class
-      newValue: ch.qos.logback.core.ConsoleAppender
-      oldValue: ch.qos.logback.core.rolling.RollingFileAppender
-      fileMatcher: '**/log*.xml'
 
 
 

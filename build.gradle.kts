@@ -28,8 +28,9 @@ publishing {
 
 // val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 val rewriteVersion = "7.34.3"
-var springBoot3Version = "3.0.1"
 dependencies {
+    implementation("org.openrewrite:rewrite-gradle:7.36.0-SNAPSHOT")
+
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-properties:${rewriteVersion}")
