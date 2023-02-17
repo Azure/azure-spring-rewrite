@@ -1,14 +1,24 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.azure.spring.migration.openrewrite.java.search;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Option;
@@ -23,31 +33,27 @@ import org.openrewrite.java.tree.JavaType.Primitive;
 import org.openrewrite.marker.SearchResult;
 
 @Value
-@EqualsAndHashCode(callSuper = false)
-public final class FindLiterals extends Recipe {
+public class FindLiterals extends Recipe {
     @Option(
             displayName = "Pattern",
-            description = "A regular expression pattern to match literals against.",
-            example = "file://",
-            required = true
+            description = "A regular expression pattern to match literals against."
     )
     String pattern;
 
     @Option(displayName = "mark",
             description = "Mark in matched literals",
-            example = "",
-            required = false)
+        required = false)
     String mark;
 
-    public String getDisplayName() {
+    public @NonNull String getDisplayName() {
         return "Find literals";
     }
 
-    public String getDescription() {
+    public @NonNull String getDescription() {
         return "Find literals matching a pattern.";
     }
 
-    public Validated validate() {
+    public @NonNull Validated validate() {
         return super.validate().and(Validated.test("pattern", "Must be a valid regular expression", this.pattern, (p) -> {
             try {
                 Pattern.compile(p);
@@ -58,20 +64,18 @@ public final class FindLiterals extends Recipe {
         }));
     }
 
-    public JavaVisitor<ExecutionContext> getVisitor() {
+    public @NonNull JavaVisitor<ExecutionContext> getVisitor() {
         final Pattern compiledPattern = Pattern.compile(this.pattern);
         return new JavaIsoVisitor<ExecutionContext>() {
-            public J.Literal visitLiteral(J.Literal literal, ExecutionContext ctx) {
+            public J. @NonNull Literal visitLiteral(J. @NonNull Literal literal, @NonNull ExecutionContext ctx) {
                 if (literal.getValueSource() != null) {
                     if (literal.getType() == Primitive.String && compiledPattern.matcher(literal.getValueSource().substring(1, literal.getValueSource().length() - 1)).matches()) {
-                        return (J.Literal)SearchResult.found(literal,mark);
+                        return SearchResult.found(literal,mark);
                     }
-
                     if (compiledPattern.matcher(literal.getValueSource()).matches()) {
-                        return (J.Literal)SearchResult.found(literal,mark);
+                        return SearchResult.found(literal,mark);
                     }
                 }
-
                 return literal;
             }
         };
@@ -82,7 +86,7 @@ public final class FindLiterals extends Recipe {
         return this.pattern;
     }
 
-    public @NonNull String toString() {
+    public String toString() {
         return "FindLiterals(pattern=" + this.getPattern() + ")";
     }
 
@@ -99,19 +103,14 @@ public final class FindLiterals extends Recipe {
                 Object this$pattern = this.getPattern();
                 Object other$pattern = other.getPattern();
                 if (this$pattern == null) {
-                    if (other$pattern != null) {
-                        return false;
-                    }
-                } else if (!this$pattern.equals(other$pattern)) {
-                    return false;
-                }
-
-                return true;
+                    return other$pattern == null;
+                } else
+                    return this$pattern.equals(other$pattern);
             }
         }
     }
 
-    protected boolean canEqual(final @Nullable Object other) {
+    private boolean canEqual(final @Nullable Object other) {
         return other instanceof FindLiterals;
     }
 

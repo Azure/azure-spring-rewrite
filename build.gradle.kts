@@ -4,7 +4,6 @@ plugins {
 
 group = "com.azure.spring.migration"
 description = "Recipe to migrate ASA"
-version = "0.1.0"
 
 publishing {
     repositories {
@@ -12,8 +11,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/azure/azure-spring-rewrite")
             credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
@@ -24,12 +23,14 @@ publishing {
     }
 }
 
-
+project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
+project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
 // val rewriteVersion = rewriteRecipe.rewriteVersion.get()
-val rewriteVersion = "7.34.3"
-var springBoot3Version = "3.0.1"
+val rewriteVersion = "7.35.0"
 dependencies {
+    implementation("org.openrewrite:rewrite-gradle:7.36.0-SNAPSHOT")
+
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-properties:${rewriteVersion}")
@@ -46,4 +47,10 @@ dependencies {
     testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.32.0")
 }
 
-
+nebulaPublishVerification {
+    ignore("org.openrewrite:rewrite-gradle")
+    ignore("org.openrewrite:rewrite-java")
+    ignore("org.openrewrite:rewrite-xml")
+    ignore("org.openrewrite:rewrite-properties")
+    ignore("org.openrewrite:rewrite-maven")
+}
