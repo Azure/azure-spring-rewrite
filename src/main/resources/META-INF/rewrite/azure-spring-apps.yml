@@ -25,9 +25,30 @@ tags:
   - mordernize
 recipeList:
   - com.azure.spring.migration.openrewrite.java.search.FindLiterals:
-      pattern: [A-z]:([\\\/][^\n\t]+)+|(\\\\([^\\\,\n\t]+)\\\S+)+
+      pattern: '[A-z]:([\\\/][^\n\t]+)+|(\\\\([^\\\,\n\t]+)\\\S+)+'
       mark: "TODO ASA-WindowFilePath: this file system path is Microsoft Windows platform dependent"
+---
+type: specs.openrewrite.org/v1beta/recipe
 
+name: com.azure.spring.migration.openrewrite.FileStorageApi
+displayName: Find uses of Java file IO API
+description: >
+  Find usages of Java APIs to read/write from the file system.
+  Any usage of the file system on the application will require reconfiguration https://learn.microsoft.com/en-us/azure/developer/java/migration/migrate-spring-cloud-to-azure-spring-apps?pivots=sc-standard-tier#determine-whether-and-how-the-file-system-is-used
+tags:
+  - java-fileIO
+recipeList:
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.File *(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindTypes:
+      fullyQualifiedTypeName: java.io.LineNumber*
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindTypes:
+      fullyQualifiedTypeName: java.io.*File*
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
