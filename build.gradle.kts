@@ -27,9 +27,10 @@ project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
 // val rewriteVersion = rewriteRecipe.rewriteVersion.get()
-val rewriteVersion = "7.35.0"
+val rewriteVersion = "7.36.0"
 dependencies {
-    implementation("org.openrewrite:rewrite-gradle:7.36.0-SNAPSHOT")
+    rewrite("org.openrewrite.recipe:rewrite-spring:4.32.0")
+    implementation("org.openrewrite:rewrite-gradle:${rewriteVersion}")
 
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
