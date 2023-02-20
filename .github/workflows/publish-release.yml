@@ -18,7 +18,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@master
+        uses: gradle/wrapper-validation-action@main
 
       - name: Publish package
         uses: gradle/gradle-build-action@main

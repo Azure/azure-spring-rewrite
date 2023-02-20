@@ -85,6 +85,11 @@ public class FindMethods extends Recipe  {
     }
 
     @Override
+    public @NonNull String getDescription() {
+        return this.findMethods.getDescription();
+    }
+
+    @Override
     @SuppressWarnings("ConstantConditions")
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
         MethodMatcher methodMatcher = new MethodMatcher(methodPattern, matchOverrides);

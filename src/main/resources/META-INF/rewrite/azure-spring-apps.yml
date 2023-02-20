@@ -49,6 +49,20 @@ recipeList:
   - com.azure.spring.migration.openrewrite.java.search.FindTypes:
       fullyQualifiedTypeName: java.io.*File*
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+---
+type: specs.openrewrite.org/v1beta/recipe
+
+name: com.azure.spring.migration.openrewrite.FindFileScheme
+displayName: Find file scheme.
+description: >
+  Find file scheme.
+  Any usage of the file system on the application will require reconfiguration https://learn.microsoft.com/en-us/azure/developer/java/migration/migrate-spring-cloud-to-azure-spring-apps?pivots=sc-standard-tier#determine-whether-and-how-the-file-system-is-used
+tags:
+  - java-fileSystem
+recipeList:
+  - com.azure.spring.migration.openrewrite.java.search.FindLiterals:
+      pattern: 'file:(//.*)?/.+'
+      mark: "TODO ASA-FileStoragePath: need configuration to use file system"
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
@@ -95,6 +109,8 @@ recipeList:
   - com.azure.spring.migration.openrewrite.Springboot_2_x
   - com.azure.spring.migration.openrewrite.SpringCloud_2021
   - com.azure.spring.migration.openrewrite.WindowFilePath
+  - com.azure.spring.migration.openrewrite.FindFileScheme
+  - com.azure.spring.migration.openrewrite.FileStorageApi
 
 
 

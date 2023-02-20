@@ -33,9 +33,5 @@ dependencies {
 }
 
 nebulaPublishVerification {
-    ignore("org.openrewrite:rewrite-gradle")
     ignore("org.openrewrite:rewrite-java")
-    ignore("org.openrewrite:rewrite-xml")
-    ignore("org.openrewrite:rewrite-properties")
-    ignore("org.openrewrite:rewrite-maven")
 }

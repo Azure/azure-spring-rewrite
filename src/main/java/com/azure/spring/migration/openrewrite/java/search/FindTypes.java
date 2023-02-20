@@ -26,7 +26,6 @@ import org.openrewrite.internal.StringUtils;
 import org.openrewrite.internal.lang.NonNull;
 import org.openrewrite.internal.lang.Nullable;
 import org.openrewrite.java.JavaVisitor;
-import org.openrewrite.java.search.UsesType;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.JavaType;
 import org.openrewrite.java.tree.NameTree;
@@ -55,17 +54,22 @@ public class FindTypes extends Recipe {
         required = false)
     String mark;
 
-    public @NonNull String getDisplayName() {
-        return "Find types";
-    }
+    org.openrewrite.java.search.FindTypes findTypes;
 
-    public @NonNull String getDescription() {
-        return "Find type references by name.";
+    public FindTypes(final String fullyQualifiedTypeName, @Nullable final Boolean checkAssignability, @Nullable final String mark) {
+        this.fullyQualifiedTypeName = fullyQualifiedTypeName;
+        this.checkAssignability = checkAssignability;
+        this.mark = mark;
+        this.findTypes = new org.openrewrite.java.search.FindTypes(fullyQualifiedTypeName, checkAssignability);
     }
 
     @Override
-    protected JavaVisitor<ExecutionContext> getSingleSourceApplicableTest() {
-        return new UsesType<>(fullyQualifiedTypeName);
+    public @NonNull String getDisplayName() {
+        return this.findTypes.getDisplayName();
+    }
+
+    public @NonNull String getDescription() {
+        return this.findTypes.getDescription();
     }
 
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
