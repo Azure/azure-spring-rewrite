@@ -26,26 +26,10 @@ publishing {
 project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
-// val rewriteVersion = rewriteRecipe.rewriteVersion.get()
-val rewriteVersion = "7.36.0"
+val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
-    rewrite("org.openrewrite.recipe:rewrite-spring:4.32.0")
-    implementation("org.openrewrite:rewrite-gradle:${rewriteVersion}")
-
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-properties:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-yaml:${rewriteVersion}")
-    implementation("org.openrewrite:rewrite-maven:${rewriteVersion}")
-
-    runtimeOnly("org.openrewrite:rewrite-java-17:$rewriteVersion")
-    runtimeOnly("org.openrewrite.recipe:rewrite-testing-frameworks:1.32.0")
-    runtimeOnly("org.openrewrite.recipe:rewrite-migrate-java:1.15.0")
-    runtimeOnly("org.openrewrite:rewrite-java-17:$rewriteVersion")
-
-    testImplementation("org.openrewrite:rewrite-java-17:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-migrate-java:1.15.0")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.32.0")
+    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.34.0")
 }
 
 nebulaPublishVerification {

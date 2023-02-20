@@ -7,3 +7,5 @@ bin/
 .project
 .classpath
 .settings/
+/gradle/wrapper/
+/gradle/wrapper/
