@@ -29,7 +29,7 @@ project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByNam
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:1.34.0")
+    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteVersion}")
 }
 
 nebulaPublishVerification {
