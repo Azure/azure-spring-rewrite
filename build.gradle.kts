@@ -55,7 +55,8 @@ nexusPublishing {
 val rewriteSpringVersion = "4.32.0"
 dependencies {
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
-    implementation("org.openrewrite:rewrite-java:latest.release")
+    implementation("org.openrewrite:rewrite-java")
+    testImplementation("org.openrewrite:rewrite-test")
     testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:latest.release")
 
     compileOnly("org.projectlombok:lombok:latest.release")
