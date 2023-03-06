@@ -1,11 +1,17 @@
 plugins {
-    id("java")
-
-    id("org.openrewrite.rewrite") version "latest.release"
+    `java-library`
+    `maven-publish`
+    signing
 
     id("nebula.maven-resolved-dependencies") version "17.3.2"
     id("nebula.release") version "15.3.1"
     id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
+
+    id("nebula.maven-publish") version "17.3.2"
+    id("nebula.contacts") version "5.1.0"
+    id("nebula.info") version "11.1.0"
+
+    id("org.openrewrite.rewrite") version "latest.release"
 }
 
 group = "com.azure.spring.migration"
@@ -51,4 +57,7 @@ dependencies {
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
     implementation("org.openrewrite:rewrite-java:latest.release")
     testImplementation("org.openrewrite:rewrite-test:latest.release")
+
+    compileOnly("org.projectlombok:lombok:latest.release")
+    annotationProcessor("org.projectlombok:lombok:latest.release")
 }
