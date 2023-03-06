@@ -1,4 +1,6 @@
 plugins {
+    id("java")
+
     id("org.openrewrite.rewrite") version "latest.release"
 
     id("nebula.maven-resolved-dependencies") version "17.3.2"
@@ -8,6 +10,10 @@ plugins {
 
 group = "com.azure.spring.migration"
 description = "Recipe to migrate ASA"
+
+repositories {
+    mavenCentral()
+}
 
 publishing {
     repositories {
@@ -34,10 +40,15 @@ configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
 project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
-val rewriteVersion = "latest.release"
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
 val rewriteSpringVersion = "4.32.0"
 dependencies {
-    implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
-    testImplementation("org.openrewrite:rewrite-test")
+    implementation("org.openrewrite:rewrite-java:latest.release")
+    testImplementation("org.openrewrite:rewrite-test:latest.release")
 }
