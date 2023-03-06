@@ -56,7 +56,7 @@ val rewriteSpringVersion = "4.32.0"
 dependencies {
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
     implementation("org.openrewrite:rewrite-java:latest.release")
-    testImplementation("org.openrewrite:rewrite-test:latest.release")
+    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:latest.release")
 
     compileOnly("org.projectlombok:lombok:latest.release")
     annotationProcessor("org.projectlombok:lombok:latest.release")
