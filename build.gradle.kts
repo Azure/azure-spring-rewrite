@@ -1,5 +1,9 @@
 plugins {
-    id("org.openrewrite.build.recipe-library") version "1.8.1"
+    id("org.openrewrite.rewrite") version "latest.release"
+
+    id("nebula.maven-resolved-dependencies") version "17.3.2"
+    id("nebula.release") version "15.3.1"
+    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
 }
 
 group = "com.azure.spring.migration"
@@ -23,14 +27,17 @@ publishing {
     }
 }
 
+configure<nebula.plugin.release.git.base.ReleasePluginExtension> {
+    defaultVersionStrategy = nebula.plugin.release.NetflixOssStrategies.SNAPSHOT(project)
+}
+
 project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
-val rewriteVersion = "7.36.0"
+val rewriteVersion = "latest.release"
 val rewriteSpringVersion = "4.32.0"
-val rewriteTestVersion = "1.34.0"
 dependencies {
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteTestVersion}")
+    testImplementation("org.openrewrite:rewrite-test")
 }

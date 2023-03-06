@@ -1,6 +1,8 @@
 name: publish-cron
 
 on:
+  push:
+    branches: [fix-dependency-version-remove-gradle-recipe]
   schedule:
     - cron: '0 12 * * *'
 
