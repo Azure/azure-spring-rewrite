@@ -1,5 +1,5 @@
 plugins {
-    id("org.openrewrite.build.recipe-library") version "latest.release"
+    id("org.openrewrite.build.recipe-library") version "1.8.1"
 }
 
 group = "com.azure.spring.migration"
@@ -26,12 +26,10 @@ publishing {
 project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
-val rewriteVersion = rewriteRecipe.rewriteVersion.get()
+val rewriteVersion = "7.36.0"
+val rewriteSpringVersion = "4.32.0"
 dependencies {
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteVersion}")
-}
-
-nebulaPublishVerification {
-    ignore("org.openrewrite:rewrite-java")
+    implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
+    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:latest.release")
 }
