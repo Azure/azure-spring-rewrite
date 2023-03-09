@@ -1,0 +1,58 @@
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.azure.spring.migration.openrewrite.java.search;
+
+import org.openrewrite.xml.AddCommentToXmlTag;
+
+import org.junit.jupiter.api.Test;
+import org.openrewrite.test.RewriteTest;
+
+import static org.openrewrite.xml.Assertions.xml;
+public class FindFileAppenderLoggingTest implements RewriteTest {
+
+    @Test
+    void testFindFileAppender() {
+        rewriteRun(
+            spec -> spec.recipe(new AddCommentToXmlTag("/configuration/appender[@class]", "TODO ASA-FindFileAppenderLogging: Replace file appender with console appender")),
+            xml(
+                """
+                      <configuration>
+                         <timestamp key="byDay" datePattern="yyyyMMdd'T'HHmmss"/>
+                         <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+                            <file> log-${byDay}.txt </file>
+                            <append>true</append>
+                            <encoder>
+                               <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+                            </encoder>
+                         </appender>
+                         <root level="debug">
+                            <appender-ref ref="FILE" />
+                            <appender-ref ref="STDOUT" />
+                         </root>
+                      </configuration>
+                    """,
+                """
+                  <virtual-patches>
+                      <enhanced-virtual-patch id="evp-name" path="/[request-path]" variable="request.parameters.[paramName]" message="alphabet validation failed" enableAntisamy="false">
+                          <allowlist-pattern>^[a-zA-Z]+${'$'}</allowlist-pattern>
+                      </enhanced-virtual-patch>
+                  </virtual-patches>
+                  """
+            )
+        );
+    }
+}

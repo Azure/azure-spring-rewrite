@@ -98,9 +98,20 @@ recipeList:
       groupId: org.springframework.cloud
       artifactId: spring-cloud-dependencies
       newVersion: 2021.0.X
----
-########################################################################################################################
 
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.FindFileAppenderLogging
+displayName: Find file appender in logging
+tags:
+  - logging
+recipeList:
+  - org.openrewrite.xml.AddCommentToXmlTag:
+      xPath: //appender[matches(@class, "(?i)FileAppender")]
+      commentText: "TODO ASA-FindFileAppenderLogging: Replace file appender with console appender"
+
+########################################################################################################################
+---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.UpgradeToAzureSpringApps
 displayName: Migrate to Spring Apps

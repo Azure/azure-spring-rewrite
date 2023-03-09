@@ -29,6 +29,7 @@ project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByNam
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
     testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteVersion}")
 }
 
