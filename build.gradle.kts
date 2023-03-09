@@ -1,5 +1,5 @@
 plugins {
-    id("org.openrewrite.build.recipe-library") version "latest.release"
+    id("org.openrewrite.build.recipe-library") version "1.8.1"
 }
 
 group = "com.azure.spring.migration"
@@ -23,13 +23,20 @@ publishing {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+}
 project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
+val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 val rewriteSpringVersion = "4.32.0"
 dependencies {
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
-    implementation("org.openrewrite:rewrite-java:latest.release")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:latest.release")
+    implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
+    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:latest.integration")
 }
 
