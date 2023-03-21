@@ -33,10 +33,13 @@ project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
-val rewriteSpringVersion = "4.32.0"
 dependencies {
-    implementation("org.openrewrite.recipe:rewrite-spring:${rewriteSpringVersion}")
+    implementation("org.openrewrite.recipe:rewrite-spring:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:latest.integration")
+    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteVersion}"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${rewriteVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${rewriteVersion}")
+    testImplementation("org.assertj:assertj-core:${rewriteVersion}")
 }
 
