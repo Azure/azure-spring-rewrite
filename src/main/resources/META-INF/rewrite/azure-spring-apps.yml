@@ -106,16 +106,12 @@ displayName: Find file appender in logging
 tags:
   - logging
 recipeList:
-  - com.azure.spring.migration.openrewrite.AddCommentToXmlAttribute:
-      tagXPath: /configuration/appender
-      attributeName: class
-      attributeValueRegex: (?i)FileAppender
-      commentText: "TODO ASA-FindFileAppenderLogging: Replace file appender with console appender"
-      fileMatcher: "**/log{back,4j,4j2}{-*,}.xml"
-  - com.azure.spring.migration.openrewrite.AddCommentToXmlAttribute:
-      tagXPath: /Configuration/Appenders/File
-      commentText: "TODO ASA-FindFileAppenderLogging: Replace file appender with console appender"
-      fileMatcher: "**/log{back,4j,4j2}{-*,}.xml"
+  - com.azure.spring.migration.openrewrite.AddConsoleCommentInLogback:
+      commentText: &loggingComment "TODO ASA-CheckLogging: Replace file appender with console appender"
+      fileMatcher: "**/logback{-*,}.xml"
+  - com.azure.spring.migration.openrewrite.AddConsoleCommentInLog4j:
+      commentText: *loggingComment
+      fileMatcher: "**/log{4j,4j2}{-*,}.xml"
 
 ########################################################################################################################
 ---
