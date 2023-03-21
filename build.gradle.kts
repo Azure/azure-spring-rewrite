@@ -1,5 +1,5 @@
 plugins {
-    id("org.openrewrite.build.recipe-library") version "latest.release"
+    id("org.openrewrite.build.recipe-library") version "1.8.1"
 }
 
 group = "com.azure.spring.migration"
@@ -28,11 +28,13 @@ project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByNam
 
 val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
+    implementation("org.openrewrite.recipe:rewrite-spring:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
-    testImplementation("org.openrewrite.recipe:rewrite-testing-frameworks:${rewriteVersion}")
+    implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteVersion}"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${rewriteVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${rewriteVersion}")
+    testImplementation("org.assertj:assertj-core:${rewriteVersion}")
 }
 
-nebulaPublishVerification {
-    ignore("org.openrewrite:rewrite-java")
-}

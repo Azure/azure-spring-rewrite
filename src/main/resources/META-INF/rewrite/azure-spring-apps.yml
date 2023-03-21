@@ -75,7 +75,7 @@ tags:
   - azure
   - mordernize
 recipeList:
-  - org.openrewrite.java.spring.boot2.SpringBoot1To2Migration
+  - org.openrewrite.java.spring.boot2.UpgradeSpringBoot_2_7
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
@@ -93,12 +93,6 @@ recipeList:
       artifactId: spring-cloud-dependencies
       newVersion: 2021.0.X
       overrideManagedVersion: true
-      # UpgradeLiteralDependencyVersion only apply to fixed literal version: a version that is not a variable or property or supplied indirectly by platform BOMs or similar means
-  - org.openrewrite.gradle.UpgradeLiteralDependencyVersion:
-      groupId: org.springframework.cloud
-      artifactId: spring-cloud-dependencies
-      newVersion: 2021.0.X
-
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.openrewrite.FindFileAppenderLogging
