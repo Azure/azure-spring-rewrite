@@ -50,11 +50,9 @@ public class XmlUtil {
         return false;
     }
 
-    public static boolean searchChildren(Xml.Tag tag, String targetTagName, String targetAttributeName, String targetAttributeValueKeyword) {
-        boolean targetTagNameFound = false;
+    public static boolean searchChildAttribute(Xml.Tag tag, String targetTagName, String targetAttributeName, String targetAttributeValueKeyword) {
         for (Xml.Tag child : tag.getChildren()) {
             if (child.getName().equalsIgnoreCase(targetTagName)) {
-                targetTagNameFound = true;
                 for (Xml.Attribute attribute : child.getAttributes()) {
                     if (attribute.getKeyAsString().equalsIgnoreCase(targetAttributeName) &&
                         attribute.getValueAsString().toLowerCase().contains(targetAttributeValueKeyword)) {
@@ -63,7 +61,16 @@ public class XmlUtil {
                 }
             }
         }
-        return !targetTagNameFound;
+        return false;
+    }
+
+    public static boolean searchChildTag(Xml.Tag tag, String targetTagName) {
+        for (Xml.Tag child : tag.getChildren()) {
+            if (child.getName().equalsIgnoreCase(targetTagName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Xml.Tag addComment(Xml.Tag tag, Xml.Tag t, String commentText) {

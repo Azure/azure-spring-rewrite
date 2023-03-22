@@ -61,7 +61,7 @@ public class AddConsoleCommentInLogback extends Recipe {
     }
 
     private boolean checkLogbackHasConsole(Xml.Tag tag) {
-        return XmlUtil.searchChildren(tag, APPENDER_TAG_NAME, KEY_ATTRIBUTE.attributeName,
+        return !XmlUtil.searchChildTag(tag, APPENDER_TAG_NAME) || XmlUtil.searchChildAttribute(tag, APPENDER_TAG_NAME, KEY_ATTRIBUTE.attributeName,
             KEY_ATTRIBUTE.attributeValueKeyword);
     }
 
