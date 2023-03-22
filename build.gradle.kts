@@ -23,12 +23,6 @@ publishing {
     }
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-    }
-}
 project.rootProject.tasks.getByName("final").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 project.rootProject.tasks.getByName("snapshot").dependsOn(project.tasks.getByName("publishAzure-spring-rewritePublicationToGitHubPackagesRepository"))
 
@@ -36,6 +30,7 @@ val rewriteVersion = rewriteRecipe.rewriteVersion.get()
 dependencies {
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteVersion}"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${rewriteVersion}")

@@ -94,8 +94,21 @@ recipeList:
       newVersion: 2021.0.X
       overrideManagedVersion: true
 ---
-########################################################################################################################
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.AddCommentInLogging
+displayName: Find file appender in logging
+tags:
+  - logging
+recipeList:
+  - com.azure.spring.migration.openrewrite.xml.AddConsoleCommentInLogback:
+      commentText: &loggingComment "TODO ASA-CheckLogging: Enable logging to console"
+      fileMatcher: "**/logback{-*,}.xml"
+  - com.azure.spring.migration.openrewrite.xml.AddConsoleCommentInLog4j:
+      commentText: *loggingComment
+      fileMatcher: "**/log{4j,4j2}{-*,}.xml"
 
+########################################################################################################################
+---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.UpgradeToAzureSpringApps
 displayName: Migrate to Spring Apps
@@ -106,6 +119,7 @@ recipeList:
   - com.azure.spring.migration.openrewrite.WindowFilePath
   - com.azure.spring.migration.openrewrite.FindFileScheme
   - com.azure.spring.migration.openrewrite.FileStorageApi
+  - com.azure.spring.migration.openrewrite.AddCommentInLogging
 
 
 
