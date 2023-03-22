@@ -27,7 +27,7 @@ public class AddCommentToLog4jTest implements RewriteTest {
     void testAddCommentLog4j2() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLog4j(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/log{4j,4j2}{-*,}.xml")),
             xml(
                 """
@@ -53,8 +53,8 @@ public class AddCommentToLog4jTest implements RewriteTest {
                 """
                       <?xml version="1.0" encoding="UTF-8"?>
                       <Configuration status="DEBUG">
-                          <!--TODO ASA-CheckLogging: Replace file appender with console appender-->
                           <Appenders>
+                              <!--TODO ASA-CheckLogging: Enable logging to console-->
                               <File name="LogToFile" fileName="logs/app.log">
                                   <PatternLayout>
                                       <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
@@ -80,7 +80,7 @@ public class AddCommentToLog4jTest implements RewriteTest {
     void testAddCommentLog4j2XmlStrict() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLog4j(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/log{4j,4j2}{-*,}.xml")),
             xml(
                 """
@@ -117,7 +117,7 @@ public class AddCommentToLog4jTest implements RewriteTest {
                         </Properties>
                         <Filter type="ThresholdFilter" level="trace"/>
                         <Appenders>
-                          <!--TODO ASA-CheckLogging: Replace file appender with console appender-->
+                          <!--TODO ASA-CheckLogging: Enable logging to console-->
                           <Appender type="File" name="File" fileName="${filename}">
                             <Layout type="PatternLayout">
                               <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -143,7 +143,7 @@ public class AddCommentToLog4jTest implements RewriteTest {
     void testAddCommentLog4j() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLog4j(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/log{4j,4j2}{-*,}.xml")),
             xml(
                 """
@@ -167,7 +167,7 @@ public class AddCommentToLog4jTest implements RewriteTest {
                 """
                       <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
                       <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-                        <!--TODO ASA-CheckLogging: Replace file appender with console appender-->
+                        <!--TODO ASA-CheckLogging: Enable logging to console-->
                         <appender name="A1" class="org.apache.log4j.FileAppender">
                           <param name="File"   value="A1.log" />
                           <param name="Append" value="false" />
@@ -192,30 +192,30 @@ public class AddCommentToLog4jTest implements RewriteTest {
     void testNotAddCommentLog4j2() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLog4j(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/log{4j,4j2}{-*,}.xml")),
             xml(
                 """
-                      <?xml version="1.0" encoding="UTF-8"?>
-                      <Configuration status="DEBUG">
-                          <Appenders>
-                              <File name="LogToFile" fileName="logs/app.log">
-                                  <PatternLayout>
-                                      <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
-                                  </PatternLayout>
-                              </File>
-                              <Console name="STDOUT" target="SYSTEM_OUT">
-                                    <PatternLayout pattern="%level - %m%n"/>
-                              </Console>
-                          </Appenders>
-                          <Loggers>
-                              <Logger name="com.mkyong" level="debug" additivity="false">
-                                  <AppenderRef ref="LogToFile"/>
-                              </Logger>
-                              <Root level="error">
-                                  <AppenderRef ref="LogToFile"/>
-                              </Root>
-                          </Loggers>
+                      <Configuration name="ConfigTest" status="ERROR" monitorInterval="5">
+                        <Appenders>
+                          <SystemPropertyArbiter propertyName="env" propertyValue="dev">
+                            <Console name="Out">
+                              <PatternLayout pattern="%m%n"/>
+                            </Console>
+                          </SystemPropertyArbiter>
+                          <SystemPropertyArbiter propertyName="env" propertyValue="prod">
+                            <List name="Out">
+                            </List>
+                          </SystemPropertyArbiter>
+                        </Appenders>
+                        <Loggers>
+                          <Logger name="org.apache.test" level="trace" additivity="false">
+                            <AppenderRef ref="Out"/>
+                          </Logger>
+                          <Root level="error">
+                            <AppenderRef ref="Out"/>
+                          </Root>
+                        </Loggers>
                       </Configuration>
                     """,
                 spec -> spec.path("log4j2.xml")
@@ -227,7 +227,7 @@ public class AddCommentToLog4jTest implements RewriteTest {
     void testNotAddCommentLog4j() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLog4j(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/log{4j,4j2}{-*,}.xml")),
             xml(
                 """

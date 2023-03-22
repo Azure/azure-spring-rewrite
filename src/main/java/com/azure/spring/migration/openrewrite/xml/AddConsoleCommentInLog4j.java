@@ -16,11 +16,9 @@
 
 package com.azure.spring.migration.openrewrite.xml;
 
-import static org.openrewrite.Tree.randomId;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.azure.spring.migration.openrewrite.xml.XmlUtil.AttributeToFind;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
@@ -29,39 +27,29 @@ import org.openrewrite.Option;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.lang.NonNull;
-import org.openrewrite.marker.Markers;
 import org.openrewrite.xml.XmlVisitor;
-import org.openrewrite.xml.tree.Content;
 import org.openrewrite.xml.tree.Xml;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class AddConsoleCommentInLog4j extends Recipe {
+    private static final String LOG4J2_APPENDERS_XPATH = "/configuration/appenders";
+    private static final String LOG4J_CONFIGURATION_XPATH = "log4j:configuration";
+    private static final String APPENDER_TAG_NAME = "appender";
+    private static final String CONSOLE_TAG_NAME = "console";
 
-    String log4j2ConfigurationXPath = "/configuration";
+    private static final Map<String, XmlUtil.AttributeToFind> ATTRIBUTE_MAP = new HashMap<String, XmlUtil.AttributeToFind>() {{
+        put("log4j1", new XmlUtil.AttributeToFind("class", "consoleappender"));
+        put("log4j2", new XmlUtil.AttributeToFind("type", "console"));
+    }};
 
-    String log4j2AppendersXPath = "/configuration/appenders";
-    String log4jConfigurationXPath = "log4j:configuration";
-    String appenderTagName = "appender";
-
-    String classAttributeName = "class";
-
-    // lower case
-    String fileAppenderKeyword = "fileappender";
-    // lower case
-    String consoleAppenderKeyword = "consoleappender";
-
-    List<String> fileTagList = Arrays.asList("file", "rollingfile");
-    String consoleTagName = "console";
 
     @Option(displayName = "Comment text",
-        description = "The text to add as a comment.",
-        example = "This is excluded due to CVE <X> and will be removed when we upgrade the next version is available.")
+        description = "The text to add as a comment.")
     String commentText;
 
     @Option(displayName = "File matcher",
         description = "If provided only matching files will be modified. This is a glob expression.",
-        required = true,
         example = "'**/application-*.xml'")
     String fileMatcher;
 
@@ -80,58 +68,34 @@ public class AddConsoleCommentInLog4j extends Recipe {
         return new HasSourcePath<>(fileMatcher);
     }
 
-    public boolean checkLog4j1(Xml.Tag tag) {
-        boolean fileFlag = XmlUtil.searchChildren(tag,appenderTagName,classAttributeName,fileAppenderKeyword);
-        boolean consoleFlag = XmlUtil.searchChildren(tag,appenderTagName,classAttributeName,consoleAppenderKeyword);
-        return fileFlag && !consoleFlag;
-    }
+public boolean checkLog4j1HasConsole(Xml.Tag tag) {
+    AttributeToFind log4j1KeyAttribute = ATTRIBUTE_MAP.get("log4j1");
+    return XmlUtil.searchChildren(tag, APPENDER_TAG_NAME, log4j1KeyAttribute.attributeName, log4j1KeyAttribute.attributeValueKeyword);
+}
 
-    public boolean checkConciseSyntaxLog4j2(Xml.Tag tag) {
-        boolean fileFlag = false;
-        for (String fileTagName : fileTagList) {
-            if (XmlUtil.dfs(tag, fileTagName)) {
-                fileFlag = true;
-                break;
-            }
-        }
-        boolean consoleFlag = XmlUtil.dfs(tag,consoleTagName);
-        return fileFlag && !consoleFlag;
-    }
-
-    public boolean checkStrictSyntaxLog4j2(Xml.Tag tag) {
-        boolean fileFlag = false;
-        for (String fileTagName : fileTagList) {
-            if (XmlUtil.searchChildren(tag, "appender", "type", fileTagName)) {
-                fileFlag = true;
-                break;
-            }
-        }
-        boolean consoleFlag = XmlUtil.searchChildren(tag, "appender", "type", "console");
-        return fileFlag && !consoleFlag;
-    }
-
+public boolean checkLog4j2HasConsole(Xml.Tag tag) {
+    AttributeToFind log4j2StrictAttribute = ATTRIBUTE_MAP.get("log4j2");
+    return XmlUtil.dfs(tag, CONSOLE_TAG_NAME) ||
+        XmlUtil.searchChildren(tag, APPENDER_TAG_NAME, log4j2StrictAttribute.attributeName, log4j2StrictAttribute.attributeValueKeyword);
+}
 
     @Override
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
         return new XmlVisitor<ExecutionContext>() {
-            final CaseInsensitiveXPathMatcher log4j2ConfigurationTagMatcher = new CaseInsensitiveXPathMatcher(log4j2ConfigurationXPath);
-            final CaseInsensitiveXPathMatcher log4j2AppendersTagMatcher = new CaseInsensitiveXPathMatcher(log4j2AppendersXPath);
-            final CaseInsensitiveXPathMatcher log4jConfigurationTagMatcher = new CaseInsensitiveXPathMatcher(log4jConfigurationXPath);
-
+            final CaseInsensitiveXPathMatcher log4j2AppendersTagMatcher = new CaseInsensitiveXPathMatcher(LOG4J2_APPENDERS_XPATH);
+            final CaseInsensitiveXPathMatcher log4jConfigurationTagMatcher = new CaseInsensitiveXPathMatcher(LOG4J_CONFIGURATION_XPATH);
 
             @Override
             public @NonNull Xml.Tag visitTag(@NonNull Xml.Tag tag, @NonNull ExecutionContext ctx) {
                 Xml.Tag t = (Xml.Tag) super.visitTag(tag, ctx);
-                boolean needComment = false;
                 if (log4jConfigurationTagMatcher.matches(getCursor())) {
-                    needComment = checkLog4j1(t);
-                } else if (log4j2ConfigurationTagMatcher.matches(getCursor())) {
-                    needComment = checkConciseSyntaxLog4j2(t);
+                    if (!checkLog4j1HasConsole(t)) {
+                        return XmlUtil.addComment(tag, t, commentText);
+                    }
                 } else if (log4j2AppendersTagMatcher.matches(getCursor())) {
-                    needComment = checkStrictSyntaxLog4j2(t);
-                }
-                if (needComment) {
-                    return XmlUtil.addComment(tag, t, commentText);
+                    if (!checkLog4j2HasConsole(t)) {
+                        return XmlUtil.addComment(tag, t, commentText);
+                    }
                 }
                 return t;
             }

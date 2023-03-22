@@ -95,15 +95,15 @@ recipeList:
       overrideManagedVersion: true
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.spring.migration.openrewrite.FindFileAppenderLogging
+name: com.azure.spring.migration.openrewrite.AddCommentInLogging
 displayName: Find file appender in logging
 tags:
   - logging
 recipeList:
-  - com.azure.spring.migration.openrewrite.AddConsoleCommentInLogback:
-      commentText: &loggingComment "TODO ASA-CheckLogging: Replace file appender with console appender"
+  - com.azure.spring.migration.openrewrite.xml.AddConsoleCommentInLogback:
+      commentText: &loggingComment "TODO ASA-CheckLogging: Enable logging to console"
       fileMatcher: "**/logback{-*,}.xml"
-  - com.azure.spring.migration.openrewrite.AddConsoleCommentInLog4j:
+  - com.azure.spring.migration.openrewrite.xml.AddConsoleCommentInLog4j:
       commentText: *loggingComment
       fileMatcher: "**/log{4j,4j2}{-*,}.xml"
 
@@ -119,6 +119,7 @@ recipeList:
   - com.azure.spring.migration.openrewrite.WindowFilePath
   - com.azure.spring.migration.openrewrite.FindFileScheme
   - com.azure.spring.migration.openrewrite.FileStorageApi
+  - com.azure.spring.migration.openrewrite.AddCommentInLogging
 
 
 

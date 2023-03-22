@@ -26,7 +26,7 @@ public class AddCommentToLogbackTest implements RewriteTest {
     void testAddComment() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLogback(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/logback{-*,}.xml")),
             xml(
                 """
@@ -50,7 +50,7 @@ public class AddCommentToLogbackTest implements RewriteTest {
                     """,
                 """
                       <Configuration>
-                         <!--TODO ASA-CheckLogging: Replace file appender with console appender-->
+                         <!--TODO ASA-CheckLogging: Enable logging to console-->
                          <timestamp key="byDay" datePattern="yyyyMMdd'T'HHmmss"/>
                          <Appender name="FILE" class="ch.qos.logback.core.FileAppender">
                             <file> log-${byDay}.txt </file>
@@ -74,10 +74,29 @@ public class AddCommentToLogbackTest implements RewriteTest {
     }
 
     @Test
+    void testNotAddCommentForInclude() {
+        rewriteRun(
+            spec -> spec.recipe(new AddConsoleCommentInLogback(
+                "TODO ASA-CheckLogging: Enable logging to console",
+                "**/logback{-*,}.xml")),
+            xml(
+                """
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <configuration>
+                          <include resource="org/springframework/boot/logging/logback/base.xml"/>
+                          <jmxConfigurator/>
+                      </configuration>
+                    """,
+                spec -> spec.path("logback.xml")
+            )
+        );
+    }
+
+    @Test
     void testNotAddComment() {
         rewriteRun(
             spec -> spec.recipe(new AddConsoleCommentInLogback(
-                "TODO ASA-CheckLogging: Replace file appender with console appender",
+                "TODO ASA-CheckLogging: Enable logging to console",
                 "**/logback{-*,}.xml")),
             xml(
                 """

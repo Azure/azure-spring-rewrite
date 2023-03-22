@@ -16,46 +16,32 @@
 
 package com.azure.spring.migration.openrewrite.xml;
 
-import java.util.ArrayList;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.openrewrite.ExecutionContext;
+import org.openrewrite.HasSourcePath;
 import org.openrewrite.Option;
 import org.openrewrite.Recipe;
+import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.lang.NonNull;
-import org.openrewrite.marker.Markers;
 import org.openrewrite.xml.XmlVisitor;
 import org.openrewrite.xml.tree.Xml;
-
-import org.openrewrite.*;
-import org.openrewrite.xml.tree.Content;
-
-import java.util.*;
-
-import static org.openrewrite.Tree.randomId;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class AddConsoleCommentInLogback extends Recipe {
 
-    String configurationXPath = "/configuration";
-    String appenderTagName = "appender";
+    private static final String CONFIGURATION_XPATH = "/configuration";
+    private static final String APPENDER_TAG_NAME = "appender";
 
-    String classAttributeName = "class";
-
-    // lower case
-    String fileAppenderKeyword = "fileappender";
-    // lower case
-    String consoleAppenderKeyword = "consoleappender";
+    private static final XmlUtil.AttributeToFind KEY_ATTRIBUTE = new XmlUtil.AttributeToFind("class", "consoleappender");
 
     @Option(displayName = "Comment text",
-        description = "The text to add as a comment.",
-        example = "This is excluded due to CVE <X> and will be removed when we upgrade the next version is available.")
+        description = "The text to add as a comment.")
     String commentText;
 
     @Option(displayName = "File matcher",
         description = "If provided only matching files will be modified. This is a glob expression.",
-        required = true,
         example = "'**/application-*.xml'")
     String fileMatcher;
 
@@ -70,28 +56,25 @@ public class AddConsoleCommentInLogback extends Recipe {
     }
 
     @Override
-    protected TreeVisitor<?, ExecutionContext> getSingleSourceApplicableTest() {
+    protected @NonNull TreeVisitor<?, ExecutionContext> getSingleSourceApplicableTest() {
         return new HasSourcePath<>(fileMatcher);
     }
 
-
-    public boolean checkAppendersLogback(Xml.Tag tag) {
-        boolean fileFlag = XmlUtil.searchChildren(tag,appenderTagName,classAttributeName,fileAppenderKeyword);
-        boolean consoleFlag = XmlUtil.searchChildren(tag,appenderTagName,classAttributeName,consoleAppenderKeyword);
-        return fileFlag && !consoleFlag;
+    private boolean checkLogbackHasConsole(Xml.Tag tag) {
+        return XmlUtil.searchChildren(tag, APPENDER_TAG_NAME, KEY_ATTRIBUTE.attributeName,
+            KEY_ATTRIBUTE.attributeValueKeyword);
     }
-
 
     @Override
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
         return new XmlVisitor<ExecutionContext>() {
-            final CaseInsensitiveXPathMatcher configurationTagMatcher = new CaseInsensitiveXPathMatcher(configurationXPath);
+            final CaseInsensitiveXPathMatcher configurationTagMatcher = new CaseInsensitiveXPathMatcher(CONFIGURATION_XPATH);
 
             @Override
             public @NonNull Xml.Tag visitTag(@NonNull Xml.Tag tag, @NonNull ExecutionContext ctx) {
                 Xml.Tag t = (Xml.Tag) super.visitTag(tag, ctx);
                 if (configurationTagMatcher.matches(getCursor())) {
-                    if (checkAppendersLogback(t)) {
+                    if (!checkLogbackHasConsole(t)) {
                         return XmlUtil.addComment(tag, t, commentText);
                     }
                 }

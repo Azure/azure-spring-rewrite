@@ -26,31 +26,47 @@ import org.openrewrite.xml.tree.Xml;
 
 public class XmlUtil {
 
-
-    public static boolean dfs(Xml.Tag tag, String target) {
-        if (tag == null) return false;
-        if (tag.getName().equalsIgnoreCase(target)) return true;
-        for (Xml.Tag child : tag.getChildren()) {
-            if (dfs(child, target)) return true;
+    static class AttributeToFind {
+        String attributeName;
+        String attributeValueKeyword;
+        public AttributeToFind(String attributeName, String attributeValueKeyword) {
+            this.attributeName = attributeName;
+            this.attributeValueKeyword = attributeValueKeyword;
         }
-        return false;
     }
 
-    public static boolean searchChildren(Xml.Tag tag, String targetTagName, String targetAttributeName, String targetAttributeValueKeyword) {
+    public static boolean dfs(Xml.Tag tag, String target) {
+        if (tag == null) {
+            return false;
+        }
+        if (tag.getName().equalsIgnoreCase(target)) {
+            return true;
+        }
         for (Xml.Tag child : tag.getChildren()) {
-            if (child.getName().equalsIgnoreCase(targetTagName)) {
-                for (Xml.Attribute attribute : child.getAttributes()) {
-                    if (attribute.getKeyAsString().equalsIgnoreCase(targetAttributeName))
-                        if (attribute.getValueAsString().toLowerCase().contains(targetAttributeValueKeyword)) {
-                            return true;
-                        }
-                }
+            if (dfs(child, target)) {
+                return true;
             }
         }
         return false;
     }
 
-    public static Xml.Tag addComment(Xml.Tag tag,Xml.Tag t, String commentText) {
+    public static boolean searchChildren(Xml.Tag tag, String targetTagName, String targetAttributeName, String targetAttributeValueKeyword) {
+        boolean targetTagNameFound = false;
+        for (Xml.Tag child : tag.getChildren()) {
+            if (child.getName().equalsIgnoreCase(targetTagName)) {
+                targetTagNameFound = true;
+                for (Xml.Attribute attribute : child.getAttributes()) {
+                    if (attribute.getKeyAsString().equalsIgnoreCase(targetAttributeName) &&
+                        attribute.getValueAsString().toLowerCase().contains(targetAttributeValueKeyword)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return !targetTagNameFound;
+    }
+
+    public static Xml.Tag addComment(Xml.Tag tag, Xml.Tag t, String commentText) {
         if (tag.getContent() != null) {
             List<Content> contents = new ArrayList<>(tag.getContent());
             boolean containsComment = contents.stream()
