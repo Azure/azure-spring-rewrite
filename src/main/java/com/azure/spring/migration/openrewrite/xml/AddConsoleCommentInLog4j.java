@@ -70,13 +70,13 @@ public class AddConsoleCommentInLog4j extends Recipe {
 
 public boolean checkLog4j1HasConsole(Xml.Tag tag) {
     AttributeToFind log4j1KeyAttribute = ATTRIBUTE_MAP.get("log4j1");
-    return XmlUtil.searchChildren(tag, APPENDER_TAG_NAME, log4j1KeyAttribute.attributeName, log4j1KeyAttribute.attributeValueKeyword);
+    return !XmlUtil.searchChildTag(tag, APPENDER_TAG_NAME) || XmlUtil.searchChildAttribute(tag, APPENDER_TAG_NAME, log4j1KeyAttribute.attributeName, log4j1KeyAttribute.attributeValueKeyword);
 }
 
 public boolean checkLog4j2HasConsole(Xml.Tag tag) {
     AttributeToFind log4j2StrictAttribute = ATTRIBUTE_MAP.get("log4j2");
     return XmlUtil.dfs(tag, CONSOLE_TAG_NAME) ||
-        XmlUtil.searchChildren(tag, APPENDER_TAG_NAME, log4j2StrictAttribute.attributeName, log4j2StrictAttribute.attributeValueKeyword);
+        XmlUtil.searchChildAttribute(tag, APPENDER_TAG_NAME, log4j2StrictAttribute.attributeName, log4j2StrictAttribute.attributeValueKeyword);
 }
 
     @Override
