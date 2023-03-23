@@ -30,9 +30,8 @@ public final class FindMethodsTest implements RewriteTest {
                         """
                                   package org.springframework.samples.petclinic;
                                   import java.io.File;
-
+                                  
                                   public class LocalFile {
-
                                       public void test(){
                                           File file = new File("c:\\\\temp\\\\d.text");
                                       }
@@ -41,9 +40,8 @@ public final class FindMethodsTest implements RewriteTest {
                         """
                               package org.springframework.samples.petclinic;
                               import java.io.File;
-
+                              
                               public class LocalFile {
-
                                   public void test(){
                                       File file = /*~~(TODO ASA-FileStorageApi: need configuration to use storage)~~>*/new File("c:\\\\temp\\\\d.text");
                                   }
@@ -53,14 +51,12 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-EnvApi: need environment configuration in azure spring apps")),
+                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                                   package org.springframework.samples.petclinic;
-                                  import java.io.File;
 
                                   public class LocalEnv {
-
                                       public void test(){
                                           System.getenv("1234");
                                       }
@@ -68,12 +64,10 @@ public final class FindMethodsTest implements RewriteTest {
                                 """,
                         """
                                   package org.springframework.samples.petclinic;
-                                  import java.io.File;
-    
+
                                   public class LocalEnv {
-    
                                       public void test(){
-                                          /*~~(TODO ASA-EnvApi: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
+                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
                                       }
                                   }
                             """
@@ -81,11 +75,58 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-NativemethodApi: need to mount your own storage and upload your binary code")),
+                spec -> spec.recipe(new FindMethods("java.lang.System getProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                                   package org.springframework.samples.petclinic;
-                                  import java.io.File;
+
+                                  public class LocalProperty {
+                                      public void test(){
+                                          System.getProperty("1234");
+                                      }
+                                  }
+                                """,
+                        """
+                                  package org.springframework.samples.petclinic;
+
+                                  public class LocalProperty {
+                                      public void test(){
+                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getProperty("1234");
+                                      }
+                                  }
+                            """
+                )
+        );
+
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System setProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                java(
+                        """
+                                  package org.springframework.samples.petclinic;
+
+                                  public class LocalProperty {
+                                      public void test(Property p){
+                                          System.setProperties(p);
+                                      }
+                                  }
+                                """,
+                        """
+                                  package org.springframework.samples.petclinic;
+
+                                  public class LocalProperty {
+                                      public void test(Property p){
+                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.setProperties("1234");
+                                      }
+                                  }
+                            """
+                )
+        );
+
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
+                java(
+                        """
+                                  package org.springframework.samples.petclinic;
 
                                   public class LocalNative {
 
@@ -96,12 +137,39 @@ public final class FindMethodsTest implements RewriteTest {
                             """,
                         """
                                   package org.springframework.samples.petclinic;
-                                  import java.io.File;
 
                                   public class LocalNative {
 
                                       public void test(){
-                                          /*~~(TODO ASA-NativemethodApi: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
+                                          /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
+                                      }
+                                  }
+                            """
+                )
+        );
+
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
+                java(
+                        """
+                                  package org.springframework.samples.petclinic;
+                                  import java.io.File;
+
+                                  public class LocalNative {
+
+                                      public void load(){
+                                          System.loadLibrary("1234");
+                                      }
+                                  }
+                            """,
+                        """
+                                  package org.springframework.samples.petclinic;
+                                  import java.io.File;
+
+                                  public class LocalNative {
+
+                                      public void load(){
+                                          /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
                                       }
                                   }
                             """

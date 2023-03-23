@@ -43,16 +43,6 @@ recipeList:
       matchOverrides: true
       flow: null
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
-  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
-      methodPattern: 'java.lang.System getenv(..)'
-      matchOverrides: true
-      flow: null
-      mark: "TODO ASA-EnvApi: need environment configuration in azure spring apps"
-  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
-      methodPattern: 'java.lang.System loadLibrary(..)'
-      matchOverrides: true
-      flow: null
-      mark: "TODO ASA-NativemethodApi: need to mount your own storage and upload your binary code"
   - com.azure.spring.migration.openrewrite.java.search.FindTypes:
       fullyQualifiedTypeName: java.io.LineNumber*
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
@@ -116,6 +106,53 @@ recipeList:
   - com.azure.spring.migration.openrewrite.xml.AddConsoleCommentInLog4j:
       commentText: *loggingComment
       fileMatcher: "**/log{4j,4j2}{-*,}.xml"
+---
+type: specs.openrewrite.org/v1beta/recipe
+
+name: com.azure.spring.migration.openrewrite.JavaSystemConfig
+displayName: Find uses of Java System Config
+description: >
+  Review usage of environment variables and system properties and externalize. 
+  You can use springboot configuration or inject any per-service configuration settings into each service as environment variables. 
+  https://learn.microsoft.com/en-us/azure/developer/java/migration/migrate-spring-boot-to-azure-spring-apps#configure-per-service-secrets-and-externalized-settings
+tags:
+  - systemConfig
+recipeList:
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System getenv(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System getProperty(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System setProperties(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+---
+type: specs.openrewrite.org/v1beta/recipe
+
+name: com.azure.spring.migration.openrewrite.JavaSystemLoad
+displayName: Find uses of Java System Load
+description: >
+  Remediate to cloud friendly implentation. It may not work on ASA
+tags:
+  - systemLoad
+recipeList:
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System loadLibrary(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System load(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code"
 
 ########################################################################################################################
 ---
