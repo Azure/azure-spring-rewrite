@@ -43,6 +43,16 @@ recipeList:
       matchOverrides: true
       flow: null
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System getenv(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-EnvApi: need environment configuration in azure spring apps"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.lang.System loadLibrary(..)'
+      matchOverrides: true
+      flow: null
+      mark: "TODO ASA-NativemethodApi: need to mount your own storage and upload your binary code"
   - com.azure.spring.migration.openrewrite.java.search.FindTypes:
       fullyQualifiedTypeName: java.io.LineNumber*
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"

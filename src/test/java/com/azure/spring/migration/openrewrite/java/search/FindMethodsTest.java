@@ -51,5 +51,61 @@ public final class FindMethodsTest implements RewriteTest {
                             """
                 )
         );
+
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-EnvApi: need environment configuration in azure spring apps")),
+                java(
+                        """
+                                  package org.springframework.samples.petclinic;
+                                  import java.io.File;
+
+                                  public class LocalEnv {
+
+                                      public void test(){
+                                          System.getenv("1234");
+                                      }
+                                  }
+                                """,
+                        """
+                                  package org.springframework.samples.petclinic;
+                                  import java.io.File;
+    
+                                  public class LocalEnv {
+    
+                                      public void test(){
+                                          /*~~(TODO ASA-EnvApi: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
+                                      }
+                                  }
+                            """
+                )
+        );
+
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-NativemethodApi: need to mount your own storage and upload your binary code")),
+                java(
+                        """
+                                  package org.springframework.samples.petclinic;
+                                  import java.io.File;
+
+                                  public class LocalNative {
+
+                                      public void test(){
+                                          System.loadLibrary("1234");
+                                      }
+                                  }
+                            """,
+                        """
+                                  package org.springframework.samples.petclinic;
+                                  import java.io.File;
+
+                                  public class LocalNative {
+
+                                      public void test(){
+                                          /*~~(TODO ASA-NativemethodApi: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
+                                      }
+                                  }
+                            """
+                )
+        );
     }
 }
