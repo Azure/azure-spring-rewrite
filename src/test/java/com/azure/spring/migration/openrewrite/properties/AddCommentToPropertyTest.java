@@ -29,7 +29,12 @@ public class AddCommentToPropertyTest implements RewriteTest {
                 """
                     application.Password = 1111
                     application.name = name
-                      """
+                      """,
+                """
+                    application.Password = 1111
+                    #TODO ASA-FindPassword: Don't save passwords or login information in files
+                    application.name = name
+                    """
             )
         );
     }
