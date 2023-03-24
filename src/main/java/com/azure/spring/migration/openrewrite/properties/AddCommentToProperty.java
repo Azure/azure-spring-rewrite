@@ -16,6 +16,7 @@
 
 package com.azure.spring.migration.openrewrite.properties;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -34,12 +35,12 @@ import org.openrewrite.properties.tree.Properties.Content;
 public class AddCommentToProperty extends Recipe {
     @Override
     public String getDisplayName() {
-        return "Find property";
+        return "Add comment to property";
     }
 
     @Override
     public String getDescription() {
-        return "Finds occurrences of a property key.";
+        return "Add comment to a matched property.";
     }
 
     @Option(displayName = "Property key",
@@ -64,7 +65,7 @@ public class AddCommentToProperty extends Recipe {
         return new PropertiesVisitor<ExecutionContext>() {
             @Override
             public Properties visitFile(Properties.File file, ExecutionContext ctx) {
-                List<Content> contents = file.getContent();
+                List<Content> contents = new ArrayList<>(file.getContent());
                 for (int i = 0; i < contents.size(); i++) {
                     Properties.Content content = contents.get(i);
                     if (content instanceof Properties.Entry) {
