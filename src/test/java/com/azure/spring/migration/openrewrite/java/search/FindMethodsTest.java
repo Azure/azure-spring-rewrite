@@ -48,25 +48,25 @@ public final class FindMethodsTest implements RewriteTest {
                 )
         );
 
-//        rewriteRun(
-//                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
-//                java(
-//                        """
-//                              public class LocalEnv {
-//                                  public void test(){
-//                                      System.getenv("1234");
-//                                  }
-//                              }
-//                                """,
-//                        """
-//                              public class LocalEnv {
-//                                  public void test(){
-//                                      /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
-//                                  }
-//                              }
-//                            """
-//                )
-//        );
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                java(
+                        """
+                              public class LocalEnv {
+                                  public void test(){
+                                      System.getenv("1234");
+                                  }
+                              }
+                                """,
+                        """
+                              public class LocalEnv {
+                                  public void test(){
+                                      /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
+                                  }
+                              }
+                            """
+                )
+        );
 
         rewriteRun(
                 spec -> spec.recipe(new FindMethods("java.lang.System getProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
@@ -93,14 +93,14 @@ public final class FindMethodsTest implements RewriteTest {
                 java(
                         """
                               public class LocalProperty {
-                                  public void test(Properties p){
+                                  public void test(java.util.Properties p){
                                       System.setProperties(p);
                                   }
                               }
                             """,
                         """
                               public class LocalProperty {
-                                  public void test(Properties p){
+                                  public void test(java.util.Properties p){
                                       /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.setProperties(p);
                                   }
                               }
