@@ -133,6 +133,11 @@ recipeList:
       matchOverrides: true
       flow: null
       mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+#  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+#      methodPattern: 'java.lang.System setProperty(..)'
+#      matchOverrides: true
+#      flow: null
+#      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
 ---
 type: specs.openrewrite.org/v1beta/recipe
 
