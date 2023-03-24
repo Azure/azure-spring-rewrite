@@ -28,24 +28,22 @@ public final class FindMethodsTest implements RewriteTest {
                 spec -> spec.recipe(new FindMethods("java.io.File *(..)",true,null, "TODO ASA-FileStorageApi: need configuration to use storage")),
                 java(
                         """
-                                  package org.springframework.samples.petclinic;
-                                  import java.io.File;
-                                  
-                                  public class LocalFile {
-                                      public void test(){
-                                          File file = new File("c:\\\\temp\\\\d.text");
-                                      }
-                                  }
-                                """,
-                        """
-                              package org.springframework.samples.petclinic;
                               import java.io.File;
-                              
+
                               public class LocalFile {
                                   public void test(){
-                                      File file = /*~~(TODO ASA-FileStorageApi: need configuration to use storage)~~>*/new File("c:\\\\temp\\\\d.text");
+                                      File file = new File("c:\\\\temp\\\\d.text");
                                   }
                               }
+                                """,
+                        """
+                          import java.io.File;
+
+                          public class LocalFile {
+                              public void test(){
+                                  File file = /*~~(TODO ASA-FileStorageApi: need configuration to use storage)~~>*/new File("c:\\\\temp\\\\d.text");
+                              }
+                          }
                             """
                 )
         );
@@ -54,22 +52,18 @@ public final class FindMethodsTest implements RewriteTest {
                 spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
-                                  package org.springframework.samples.petclinic;
-
-                                  public class LocalEnv {
-                                      public void test(){
-                                          System.getenv("1234");
-                                      }
+                              public class LocalEnv {
+                                  public void test(){
+                                      System.getenv("1234");
                                   }
+                              }
                                 """,
                         """
-                                  package org.springframework.samples.petclinic;
-
-                                  public class LocalEnv {
-                                      public void test(){
-                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
-                                      }
+                              public class LocalEnv {
+                                  public void test(){
+                                      /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getenv("1234");
                                   }
+                              }
                             """
                 )
         );
@@ -78,22 +72,18 @@ public final class FindMethodsTest implements RewriteTest {
                 spec -> spec.recipe(new FindMethods("java.lang.System getProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
-                                  package org.springframework.samples.petclinic;
-
-                                  public class LocalProperty {
-                                      public void test(){
-                                          System.getProperty("1234");
-                                      }
+                              public class LocalProperty {
+                                  public void test(){
+                                      System.getProperty("1234");
                                   }
+                              }
                                 """,
                         """
-                                  package org.springframework.samples.petclinic;
-
-                                  public class LocalProperty {
-                                      public void test(){
-                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getProperty("1234");
-                                      }
+                              public class LocalProperty {
+                                  public void test(){
+                                      /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.getProperty("1234");
                                   }
+                              }
                             """
                 )
         );
@@ -102,20 +92,36 @@ public final class FindMethodsTest implements RewriteTest {
                 spec -> spec.recipe(new FindMethods("java.lang.System setProperties(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
-                                  package org.springframework.samples.petclinic;
+                              public class LocalProperty {
+                                  public void test(java.util.Properties p){
+                                      System.setProperties(p);
+                                  }
+                              }
+                            """,
+                        """
+                              public class LocalProperty {
+                                  public void test(java.util.Properties p){
+                                      /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.setProperties(p);
+                                  }
+                              }
+                            """
+                )
+        );
 
+        rewriteRun(
+                spec -> spec.recipe(new FindMethods("java.lang.System setProperties(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                java(
+                        """
                                   public class LocalProperty {
-                                      public void test(Property p){
-                                          System.setProperties(p);
+                                      public void test(String key, String value){
+                                          System.setProperty(key, value);
                                       }
                                   }
                                 """,
                         """
-                                  package org.springframework.samples.petclinic;
-
                                   public class LocalProperty {
-                                      public void test(Property p){
-                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.setProperties("1234");
+                                      public void test(String key, String value){
+                                          /*~~(TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps)~~>*/System.setProperty(key, value);
                                       }
                                   }
                             """
@@ -126,52 +132,46 @@ public final class FindMethodsTest implements RewriteTest {
                 spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
                 java(
                         """
-                                  package org.springframework.samples.petclinic;
+                              public class LocalNative {
 
-                                  public class LocalNative {
-
-                                      public void test(){
-                                          System.loadLibrary("1234");
-                                      }
+                                  public void test(){
+                                      System.loadLibrary("1234");
                                   }
+                              }
                             """,
                         """
-                                  package org.springframework.samples.petclinic;
+                              public class LocalNative {
 
-                                  public class LocalNative {
-
-                                      public void test(){
-                                          /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
-                                      }
+                                  public void test(){
+                                      /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
                                   }
+                              }
                             """
                 )
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
+                spec -> spec.recipe(new FindMethods("java.lang.System load(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
                 java(
                         """
-                                  package org.springframework.samples.petclinic;
-                                  import java.io.File;
+                              import java.io.File;
 
-                                  public class LocalNative {
+                              public class LocalNative {
 
-                                      public void load(){
-                                          System.loadLibrary("1234");
-                                      }
+                                  public void load(){
+                                      System.load("1234");
                                   }
+                              }
                             """,
                         """
-                                  package org.springframework.samples.petclinic;
-                                  import java.io.File;
+                              import java.io.File;
 
-                                  public class LocalNative {
+                              public class LocalNative {
 
-                                      public void load(){
-                                          /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
-                                      }
+                                  public void load(){
+                                      /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.load("1234");
                                   }
+                              }
                             """
                 )
         );
