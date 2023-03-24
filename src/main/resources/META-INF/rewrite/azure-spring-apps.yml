@@ -96,7 +96,7 @@ recipeList:
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.openrewrite.AddCommentInLogging
-displayName: Find file appender in logging
+displayName: Add comment for enabling logging to console
 tags:
   - logging
 recipeList:
@@ -106,6 +106,35 @@ recipeList:
   - com.azure.spring.migration.openrewrite.xml.AddConsoleCommentInLog4j:
       commentText: *loggingComment
       fileMatcher: "**/log{4j,4j2}{-*,}.xml"
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.FindPassword
+displayName: Find password keyword in yaml and properties
+tags:
+  - config
+recipeList:
+  - com.azure.spring.migration.openrewrite.yaml.FindProperty:
+      key: “*password”
+      commentText: &passwordComment "TODO ASA-FindPassword: Don't save passwords or login information in files"
+  - com.azure.spring.migration.openrewrite.yaml.FindProperty:
+      key: “*userid”
+      commentText: *passwordComment
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.FindEurekaConfigConnectionInfo
+displayName: Find eureka and config server connection info in yaml and properties
+tags:
+  - config
+recipeList:
+  - com.azure.spring.migration.openrewrite.yaml.FindProperty:
+      key: “*eureka.client.serviceUrl"
+      commentText: &eurekaConfigComment "TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start"
+  - com.azure.spring.migration.openrewrite.yaml.FindProperty:
+      key: “*spring.config.import”
+      commentText: *eurekaConfigComment
+  - com.azure.spring.migration.openrewrite.yaml.FindProperty:
+      key: “*spring.cloud.config.uri”
+      commentText: *eurekaConfigComment
 
 ########################################################################################################################
 ---
