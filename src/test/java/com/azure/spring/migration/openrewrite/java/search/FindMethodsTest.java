@@ -151,7 +151,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
+                spec -> spec.recipe(new FindMethods("java.lang.System load(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
                 java(
                         """
                               import java.io.File;
@@ -159,7 +159,7 @@ public final class FindMethodsTest implements RewriteTest {
                               public class LocalNative {
 
                                   public void load(){
-                                      System.loadLibrary("1234");
+                                      System.load("1234");
                                   }
                               }
                             """,
@@ -169,7 +169,7 @@ public final class FindMethodsTest implements RewriteTest {
                               public class LocalNative {
 
                                   public void load(){
-                                      /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.loadLibrary("1234");
+                                      /*~~(TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code)~~>*/System.load("1234");
                                   }
                               }
                             """
