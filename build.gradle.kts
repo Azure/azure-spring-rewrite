@@ -31,6 +31,8 @@ dependencies {
     implementation("org.openrewrite.recipe:rewrite-spring:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-java:${rewriteVersion}")
     implementation("org.openrewrite:rewrite-xml:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-yaml:${rewriteVersion}")
+    implementation("org.openrewrite:rewrite-properties:${rewriteVersion}")
     implementation(platform("org.openrewrite.recipe:rewrite-recipe-bom:${rewriteVersion}"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${rewriteVersion}")
