@@ -109,7 +109,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System setProperties(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                spec -> spec.recipe(new FindMethods("java.lang.System setProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                                   public class LocalProperty {
