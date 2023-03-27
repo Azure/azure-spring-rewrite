@@ -216,6 +216,10 @@ recipeList:
   - com.azure.spring.migration.openrewrite.FindFileScheme
   - com.azure.spring.migration.openrewrite.FileStorageApi
   - com.azure.spring.migration.openrewrite.AddCommentInLogging
+  - com.azure.spring.migration.openrewrite.FindEurekaConfigConnectionInfo
+  - com.azure.spring.migration.openrewrite.FindPassword
+  - com.azure.spring.migration.openrewrite.JavaSystemLoad
+  - com.azure.spring.migration.openrewrite.JavaSystemConfig
 
 
 
