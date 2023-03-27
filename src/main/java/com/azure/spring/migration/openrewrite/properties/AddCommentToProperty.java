@@ -72,7 +72,7 @@ public class AddCommentToProperty extends Recipe {
 
     @Override
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new PropertiesVisitor<>() {
+        return new PropertiesVisitor<ExecutionContext>() {
             @Override
             public @NonNull Properties visitFile(@NonNull Properties.File file, @NonNull ExecutionContext ctx) {
                 List<Content> contents = new ArrayList<>(file.getContent());
@@ -80,7 +80,8 @@ public class AddCommentToProperty extends Recipe {
                 ListIterator<Content> iterator = contents.listIterator(contents.size());
                 while (iterator.hasPrevious()) {
                     Content content = iterator.previous();
-                    if (content instanceof Entry entry) {
+                    if (content instanceof Entry) {
+                        Entry entry = (Entry) content;
                         if (!Boolean.FALSE.equals(relaxedBinding) ? NameCaseConvention.matchesGlobRelaxedBinding(
                             entry.getKey(), propertyKey) :
                             StringUtils.matchesGlob(entry.getKey(), propertyKey)) {
