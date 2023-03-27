@@ -67,7 +67,7 @@ public class FindProperty extends Recipe {
 
     @Override
     public @NonNull YamlVisitor<ExecutionContext> getVisitor() {
-        return new YamlIsoVisitor<>() {
+        return new YamlIsoVisitor<ExecutionContext>() {
             @Override
             public @NonNull Yaml.Mapping.Entry visitMappingEntry(@NonNull Yaml.Mapping.Entry entry,
                                                                  @NonNull ExecutionContext ctx) {
@@ -93,7 +93,8 @@ public class FindProperty extends Recipe {
         int i = 0;
         while (path.hasNext()) {
             Object next = path.next();
-            if (next instanceof Yaml.Mapping.Entry entry) {
+            if (next instanceof Yaml.Mapping.Entry) {
+                Yaml.Mapping.Entry entry = (Yaml.Mapping.Entry) next;
                 if (i++ > 0) {
                     asProperty.insert(0, '.');
                 }
