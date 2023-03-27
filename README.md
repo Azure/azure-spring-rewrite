@@ -1,7 +1,15 @@
 # azure-spring-rewrite
 
+
+1) Configure authentication with a personal access token. You can refer to [these instructions](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-with-a-personal-access-token) for more information.
+2) Run the following Maven command: `./mvnw -U org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.activeRecipes=com.azure.spring.migration.UpgradeToAzureSpringApps -Drewrite.recipeArtifactCoordinates=com.azure.spring.migration:azure-spring-rewrite`
+
+
 ## how to use
-1) go to $HOME/.m2/settings.xml, add
+azure-spring-rewrite is released as a Github Maven package. To use it, you need to perform two steps:
+1) Configure authentication with a personal access token. 
+
+   Go to your maven setting file, by default is $HOME/.m2/settings.xml, add azure-spring-rewrite repository and your github personal access token.
 
 '''
 
@@ -13,6 +21,7 @@
                     <id>central</id>
                     <url>https://repo1.maven.org/maven2</url>
                 </repository>
+               <!-- add azure-spring-rewrite repository here -->
                 <repository>
                     <id>github</id>
                     <url>https://maven.pkg.github.com/azure/azure-spring-rewrite</url>
@@ -24,6 +33,7 @@
         </profile>
     </profiles>
     <servers>
+         <!-- add github personal access token -->
         <server>
             <id>github</id>
             <username>git username</username>
@@ -33,12 +43,13 @@
 
 '''
 
-2) Download project
-   https://github.com/showpune/spring-petclinic-migration
+You can refer to [authenticating-with-a-personal-access-token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-with-a-personal-access-token) for more information.
 
 
-3) Run
-   ./mvnw -Pgithub org.openrewrite.maven:rewrite-maven-plugin:4.39.0:run "-Drewrite.activeRecipes=com.azure.spring.migration.UpgradeToAzureSpringApps" "-Drewrite.recipeArtifactCoordinates=com.azure.spring.migration:azure-spring-rewrite:0.1.0,org.openrewrite.recipe:rewrite-spring:4.32.0"
-  
- 
-    
+2) Run maven command
+
+```cmd
+./mvnw -U -Pgithub org.openrewrite.maven:rewrite-maven-plugin:run \
+ "-Drewrite.activeRecipes=com.azure.spring.migration.UpgradeToAzureSpringApps" \
+ "-Drewrite.recipeArtifactCoordinates=com.azure.spring.migration:azure-spring-rewrite:0.1.0"
+```
