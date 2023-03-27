@@ -31,13 +31,17 @@ public final class FindPropertyTest implements RewriteTest {
                         application:
                           Password: 1111
                         application:
-                          password: 2222
+                          password:
+                            test: 111
                       """,
                 """
-                      application:
-                        Password: ~~(TODO ASA-FindPassword: Don't save passwords or login information in files)~~>1111
-                      application:
-                        password: ~~(TODO ASA-FindPassword: Don't save passwords or login information in files)~~>2222
+                    application:
+                      #TODO ASA-FindPassword: Don't save passwords or login information in files
+                      Password: 1111
+                    application:
+                      #TODO ASA-FindPassword: Don't save passwords or login information in files
+                      password:
+                        test: 111
                       """
             )
         );
@@ -49,18 +53,19 @@ public final class FindPropertyTest implements RewriteTest {
             spec -> spec.recipe(new FindProperty("*eureka.client.serviceUrl","TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start",true)),
             yaml(
                 """
-                    eureka:
-                      instance:
-                        instance-id:
-                      client:
-                        service-url:
+                        eureka:
+                          instance:
+                            instance-id:
+                          client:
+                            service-url: TEST
                       """,
                 """
                     eureka:
                       instance:
                         instance-id:
                       client:
-                        service-url:~~(TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start)~~>
+                        #TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start
+                        service-url: TEST
                      """
             )
         );
@@ -77,7 +82,8 @@ public final class FindPropertyTest implements RewriteTest {
                     spring:
                       cloud:
                       config:
-                        import:~~(TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start)~~>
+                        #TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start
+                        import:
                      """
             )
         );
@@ -88,13 +94,14 @@ public final class FindPropertyTest implements RewriteTest {
                     spring:
                       cloud:
                         config:
-                            uri:
+                          uri:
                       """,
                 """
                     spring:
                       cloud:
                         config:
-                            uri:~~(TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start)~~>
+                          #TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start
+                          uri:
                      """
             )
         );

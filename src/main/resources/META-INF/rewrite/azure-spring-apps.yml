@@ -171,6 +171,12 @@ recipeList:
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
       key: “*userid”
       commentText: *passwordComment
+  - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
+      key: “*password”
+      commentText: *passwordComment
+  - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
+      key: “*userid”
+      commentText: *passwordComment
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.openrewrite.FindEurekaConfigConnectionInfo
@@ -185,6 +191,15 @@ recipeList:
       key: “*spring.config.import”
       commentText: *eurekaConfigComment
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
+      key: “*spring.cloud.config.uri”
+      commentText: *eurekaConfigComment
+  - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
+      key: “*eureka.client.serviceUrl"
+      commentText: &eurekaConfigComment "TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start"
+  - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
+      key: “*spring.config.import”
+      commentText: *eurekaConfigComment
+  - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
       key: “*spring.cloud.config.uri”
       commentText: *eurekaConfigComment
 

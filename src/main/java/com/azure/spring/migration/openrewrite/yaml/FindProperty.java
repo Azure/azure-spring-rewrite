@@ -20,8 +20,8 @@ import lombok.Value;
 import org.openrewrite.*;
 import org.openrewrite.internal.NameCaseConvention;
 import org.openrewrite.internal.StringUtils;
+import org.openrewrite.internal.lang.NonNull;
 import org.openrewrite.internal.lang.Nullable;
-import org.openrewrite.marker.SearchResult;
 import org.openrewrite.yaml.YamlIsoVisitor;
 import org.openrewrite.yaml.YamlVisitor;
 import org.openrewrite.yaml.tree.Yaml;
@@ -50,30 +50,40 @@ public class FindProperty extends Recipe {
     Boolean relaxedBinding;
 
     @Override
-    public String getDisplayName() {
+    public @NonNull String getDisplayName() {
         return "Find YAML properties";
     }
 
     @Override
-    public String getDescription() {
+    public @NonNull String getDescription() {
         return "Find a YAML property. Nested YAML mappings are interpreted as dot separated property names, i.e. " +
             " as Spring Boot interprets `application.yml` files.";
     }
 
+    String HASH_TAG = "#";
+    String wrapComment(String commentText, String indent) {
+        return HASH_TAG + commentText + indent;
+    }
+
     @Override
-    public YamlVisitor<ExecutionContext> getVisitor() {
-        return new YamlIsoVisitor<ExecutionContext>() {
+    public @NonNull YamlVisitor<ExecutionContext> getVisitor() {
+        return new YamlIsoVisitor<>() {
             @Override
-            public Yaml.Mapping.Entry visitMappingEntry(Yaml.Mapping.Entry entry, ExecutionContext ctx) {
+            public @NonNull Yaml.Mapping.Entry visitMappingEntry(@NonNull Yaml.Mapping.Entry entry,
+                                                                 @NonNull ExecutionContext ctx) {
                 Yaml.Mapping.Entry e = super.visitMappingEntry(entry, ctx);
                 String prop = getProperty(getCursor());
                 if (!Boolean.FALSE.equals(relaxedBinding) ?
                     NameCaseConvention.matchesGlobRelaxedBinding(prop, propertyKey) :
                     StringUtils.matchesGlob(prop, propertyKey)) {
-                    e = e.withValue(SearchResult.found(e.getValue(),commentText));
+                    String wrappedComment = wrapComment(commentText, e.getPrefix());
+                    if (!e.getKey().getPrefix().startsWith(wrappedComment)) {
+                        e = e.withKey(e.getKey().withPrefix(wrappedComment));
+                    }
                 }
                 return e;
             }
+
         };
     }
 
@@ -83,8 +93,7 @@ public class FindProperty extends Recipe {
         int i = 0;
         while (path.hasNext()) {
             Object next = path.next();
-            if (next instanceof Yaml.Mapping.Entry) {
-                Yaml.Mapping.Entry entry = (Yaml.Mapping.Entry) next;
+            if (next instanceof Yaml.Mapping.Entry entry) {
                 if (i++ > 0) {
                     asProperty.insert(0, '.');
                 }

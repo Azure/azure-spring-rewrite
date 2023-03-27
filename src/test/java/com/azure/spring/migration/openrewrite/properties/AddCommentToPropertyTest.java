@@ -31,8 +31,56 @@ public class AddCommentToPropertyTest implements RewriteTest {
                     application.name = name
                       """,
                 """
-                    application.Password = 1111
                     #TODO ASA-FindPassword: Don't save passwords or login information in files
+                    application.Password = 1111
+                    application.name = name
+                    """
+            )
+        );
+    }
+
+    @Test
+    void testFindEurekaConfig() {
+        rewriteRun(
+            spec -> spec.recipe(new AddCommentToProperty("*eureka.client.serviceUrl","TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start",true)),
+            properties(
+                """
+                    application.name = name
+                    eureka.client.service-url = test
+                      """,
+                """
+                    application.name = name
+                    #TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start
+                    eureka.client.service-url = test
+                    """
+            )
+        );
+        rewriteRun(
+            spec -> spec.recipe(new AddCommentToProperty("*spring.config.import","TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start",true)),
+            properties(
+                """
+                    spring.config.import = test
+                    application.name = name
+                      """,
+                """
+                    #TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start
+                    spring.config.import = test
+                    application.name = name
+                    """
+            )
+        );
+        rewriteRun(
+            spec -> spec.recipe(new AddCommentToProperty("*spring.cloud.config.uri","TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start",true)),
+            properties(
+                """
+                    application = test
+                    spring.cloud.config.uri = test
+                    application.name = name
+                      """,
+                """
+                    application = test
+                    #TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start
+                    spring.cloud.config.uri = test
                     application.name = name
                     """
             )
