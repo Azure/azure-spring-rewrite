@@ -1,10 +1,5 @@
 # azure-spring-rewrite
 
-
-1) Configure authentication with a personal access token. You can refer to [these instructions](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-with-a-personal-access-token) for more information.
-2) Run the following Maven command: `./mvnw -U org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.activeRecipes=com.azure.spring.migration.UpgradeToAzureSpringApps -Drewrite.recipeArtifactCoordinates=com.azure.spring.migration:azure-spring-rewrite`
-
-
 ## how to use
 azure-spring-rewrite is released as a Github Maven package. To use it, you need to perform two steps:
 1) Configure authentication with a personal access token. 
