@@ -166,16 +166,16 @@ tags:
   - config
 recipeList:
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
-      propertyKey: “*password”
+      propertyKey: '*password'
       commentText: &passwordComment "TODO ASA-FindPassword: Don't save passwords or login information in files"
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
-      propertyKey: “*userid”
+      propertyKey: '*userid'
       commentText: *passwordComment
   - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
-      propertyKey: “*password”
+      propertyKey: '*password'
       commentText: *passwordComment
   - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
-      propertyKey: “*userid”
+      propertyKey: '*userid'
       commentText: *passwordComment
 ---
 type: specs.openrewrite.org/v1beta/recipe
@@ -185,22 +185,22 @@ tags:
   - config
 recipeList:
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
-      propertyKey: “*eureka.client.serviceUrl"
+      propertyKey: '*eureka.client.serviceUrl'
       commentText: &eurekaConfigComment "TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start"
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
-      propertyKey: “*spring.config.import”
+      propertyKey: '*spring.config.import'
       commentText: *eurekaConfigComment
   - com.azure.spring.migration.openrewrite.yaml.FindProperty:
-      propertyKey: “*spring.cloud.config.uri”
+      propertyKey: '*spring.cloud.config.uri'
       commentText: *eurekaConfigComment
   - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
-      propertyKey: “*eureka.client.serviceUrl"
+      propertyKey: '*eureka.client.serviceUrl'
       commentText: &eurekaConfigComment "TODO ASA-EurekaConfigServer: ASA will inject the eureka/config server connection info upon app start"
   - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
-      propertyKey: “*spring.config.import”
+      propertyKey: '*spring.config.import'
       commentText: *eurekaConfigComment
   - com.azure.spring.migration.openrewrite.properties.AddCommentToProperty:
-      propertyKey: “*spring.cloud.config.uri”
+      propertyKey: '*spring.cloud.config.uri'
       commentText: *eurekaConfigComment
 
 ########################################################################################################################
