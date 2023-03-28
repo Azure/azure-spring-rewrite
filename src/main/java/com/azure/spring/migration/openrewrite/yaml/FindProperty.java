@@ -61,8 +61,9 @@ public class FindProperty extends Recipe {
     }
 
     String HASH_TAG = "#";
-    String wrapComment(String commentText, String indent) {
-        return indent + HASH_TAG + commentText + indent;
+    String LINE_BREAK = "\n";
+    String wrapComment(String commentText, String prefix) {
+        return prefix + HASH_TAG + commentText + (prefix.contains(LINE_BREAK) ? prefix : LINE_BREAK + prefix);
     }
 
     @Override
