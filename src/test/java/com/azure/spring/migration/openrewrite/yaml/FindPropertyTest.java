@@ -28,6 +28,7 @@ public final class FindPropertyTest implements RewriteTest {
             spec -> spec.recipe(new FindProperty("*password","TODO ASA-FindPassword: Don't save passwords or login information in files",true)),
             yaml(
                 """
+                        password: test
                         application:
                           Password: 1111
                         application:
@@ -35,6 +36,8 @@ public final class FindPropertyTest implements RewriteTest {
                             test: 111
                       """,
                 """
+                    #TODO ASA-FindPassword: Don't save passwords or login information in files
+                    password: test
                     application:
                       #TODO ASA-FindPassword: Don't save passwords or login information in files
                       Password: 1111

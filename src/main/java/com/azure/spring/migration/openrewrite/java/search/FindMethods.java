@@ -31,7 +31,6 @@ import org.openrewrite.java.table.MethodCalls;
 import org.openrewrite.java.tree.Expression;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.JavaSourceFile;
-import org.openrewrite.marker.SearchResult;
 
 /**
  * Finds matching method invocations.
@@ -107,7 +106,7 @@ public class FindMethods extends Recipe  {
                                 method.printTrimmed(getCursor())
                             ));
                         }
-                        m = SearchResult.found(m, mark);
+                        m = AddComment.addIfAbsent(m, mark);
                     } else {
                         doAfterVisit(new FindLocalFlowPaths<>(getFlowSpec(method)));
                     }
@@ -127,7 +126,7 @@ public class FindMethods extends Recipe  {
                                 memberRef.printTrimmed(getCursor())
                             ));
                         }
-                        m = m.withReference(SearchResult.found(m.getReference(), mark));
+                        m = m.withReference(AddComment.addIfAbsent(m.getReference(), mark));
                     } else {
                         doAfterVisit(new FindLocalFlowPaths<>(getFlowSpec(memberRef)));
                     }
@@ -147,7 +146,7 @@ public class FindMethods extends Recipe  {
                                 newClass.printTrimmed(getCursor())
                             ));
                         }
-                        n = SearchResult.found(n, mark);
+                        n = AddComment.addIfAbsent(n, mark);
                     } else {
                         doAfterVisit(new FindLocalFlowPaths<>(getFlowSpec(newClass)));
                     }

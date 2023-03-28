@@ -29,7 +29,6 @@ import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.JavaVisitor;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.JavaType.Primitive;
-import org.openrewrite.marker.SearchResult;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
@@ -69,10 +68,10 @@ public class FindLiterals extends Recipe {
             public J. @NonNull Literal visitLiteral(J. @NonNull Literal literal, @NonNull ExecutionContext ctx) {
                 if (literal.getValueSource() != null) {
                     if (literal.getType() == Primitive.String && compiledPattern.matcher(literal.getValueSource().substring(1, literal.getValueSource().length() - 1)).matches()) {
-                        return SearchResult.found(literal,mark);
+                        return AddComment.addIfAbsent(literal,mark);
                     }
                     if (compiledPattern.matcher(literal.getValueSource()).matches()) {
-                        return SearchResult.found(literal,mark);
+                        return AddComment.addIfAbsent(literal,mark);
                     }
                 }
                 return literal;
