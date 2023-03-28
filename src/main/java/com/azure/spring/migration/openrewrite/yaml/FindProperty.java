@@ -62,7 +62,7 @@ public class FindProperty extends Recipe {
 
     String HASH_TAG = "#";
     String wrapComment(String commentText, String indent) {
-        return HASH_TAG + commentText + indent;
+        return indent + HASH_TAG + commentText + indent;
     }
 
     @Override
@@ -76,9 +76,9 @@ public class FindProperty extends Recipe {
                 if (!Boolean.FALSE.equals(relaxedBinding) ?
                     NameCaseConvention.matchesGlobRelaxedBinding(prop, propertyKey) :
                     StringUtils.matchesGlob(prop, propertyKey)) {
-                    String wrappedComment = wrapComment(commentText, e.getPrefix());
-                    if (!e.getKey().getPrefix().startsWith(wrappedComment)) {
-                        e = e.withKey(e.getKey().withPrefix(wrappedComment));
+                    if (!e.getPrefix().contains(commentText) && !e.getKey().getPrefix().contains(commentText)) {
+                        String wrappedComment = wrapComment(commentText, e.getPrefix());
+                        e = e.withPrefix(wrappedComment);
                     }
                 }
                 return e;

@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.openrewrite.test.RewriteTest;
 
 public final class FindMethodsTest implements RewriteTest {
+
     @Test
     void testFindMethods() {
         rewriteRun(

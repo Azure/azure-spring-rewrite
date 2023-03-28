@@ -30,7 +30,6 @@ import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.JavaType;
 import org.openrewrite.java.tree.NameTree;
 import org.openrewrite.java.tree.TypeUtils;
-import org.openrewrite.marker.SearchResult;
 
 import lombok.EqualsAndHashCode;
 
@@ -85,7 +84,7 @@ public class FindTypes extends Recipe {
                     JavaType.FullyQualified type = TypeUtils.asFullyQualified(ident.getType());
                     if (typeMatches(Boolean.TRUE.equals(checkAssignability), fullyQualifiedType, type) &&
                         ident.getSimpleName().equals(type.getClassName())) {
-                        return SearchResult.found(ident, mark);
+                        return AddComment.addIfAbsent(ident, mark);
                     }
                 }
                 return super.visitIdentifier(ident, executionContext);
@@ -97,7 +96,7 @@ public class FindTypes extends Recipe {
                 JavaType.FullyQualified type = TypeUtils.asFullyQualified(n.getType());
                 if (typeMatches(Boolean.TRUE.equals(checkAssignability), fullyQualifiedType, type) &&
                     getCursor().firstEnclosing(J.Import.class) == null) {
-                    return SearchResult.found(n, mark);
+                    return AddComment.addIfAbsent(n, mark);
                 }
                 return n;
             }
@@ -108,7 +107,7 @@ public class FindTypes extends Recipe {
                 JavaType.FullyQualified type = TypeUtils.asFullyQualified(fa.getTarget().getType());
                 if (typeMatches(Boolean.TRUE.equals(checkAssignability), fullyQualifiedType, type) &&
                     fa.getName().getSimpleName().equals("class")) {
-                    return SearchResult.found(fa, mark);
+                    return AddComment.addIfAbsent(fa, mark);
                 }
                 return fa;
             }
