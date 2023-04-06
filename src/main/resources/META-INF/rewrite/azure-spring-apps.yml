@@ -16,7 +16,7 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 
-name: com.azure.spring.migration.openrewrite.WindowFilePath
+name: com.azure.spring.migration.openrewrite.WindowsFilePath
 displayName: Remove Windows file path in application
 description: Find file system path which is Microsoft Windows platform dependent. It needs to be replaced with a Linux-style path
 tags:
@@ -26,7 +26,7 @@ tags:
 recipeList:
   - com.azure.spring.migration.openrewrite.java.search.FindLiterals:
       pattern: '[A-z]:([\\\/][^\n\t]+)+|(\\\\([^\\\,\n\t]+)\\\S+)+'
-      mark: "TODO ASA-WindowFilePath: this file system path is Microsoft Windows platform dependent"
+      mark: "TODO ASA-WindowsFilePath: this file system path is Microsoft Windows platform dependent"
 ---
 type: specs.openrewrite.org/v1beta/recipe
 
@@ -112,9 +112,8 @@ type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.openrewrite.JavaSystemConfig
 displayName: Find uses of Java System Config
 description: >
-  Review usage of environment variables and system properties and externalize. 
-  You can use springboot configuration or inject any per-service configuration settings into each service as environment variables. 
-  https://learn.microsoft.com/en-us/azure/developer/java/migration/migrate-spring-boot-to-azure-spring-apps#configure-per-service-secrets-and-externalized-settings
+  Review usage of environment variables and system properties and externalize. Configure environment variables or jvm options in azure spring apps
+  http://aka.ms/spring-boot-to-asa?toc=%2Fazure%2Fspring-apps%2Ftoc.json&bc=%2Fazure%2Fspring-apps%2Fbreadcrumb%2Ftoc.json#configure-per-service-secrets-and-externalized-settings
 tags:
   - systemConfig
 recipeList:
@@ -122,22 +121,22 @@ recipeList:
       methodPattern: 'java.lang.System getenv(..)'
       matchOverrides: true
       flow: null
-      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+      mark: "TODO ASA-JavaSystemConfig: need environment variables configuration in azure spring apps"
   - com.azure.spring.migration.openrewrite.java.search.FindMethods:
       methodPattern: 'java.lang.System getProperty(..)'
       matchOverrides: true
       flow: null
-      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+      mark: "TODO ASA-JavaSystemConfig: review usage of system properties and externalize by configuring jvm options in azure spring apps"
   - com.azure.spring.migration.openrewrite.java.search.FindMethods:
       methodPattern: 'java.lang.System setProperties(..)'
       matchOverrides: true
       flow: null
-      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+      mark: "TODO ASA-JavaSystemConfig: review usage of system properties and externalize by configuring jvm options in azure spring apps"
   - com.azure.spring.migration.openrewrite.java.search.FindMethods:
       methodPattern: 'java.lang.System setProperty(..)'
       matchOverrides: true
       flow: null
-      mark: "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps"
+      mark: "TODO ASA-JavaSystemConfig: review usage of system properties and externalize by configuring jvm options in azure spring apps"
 ---
 type: specs.openrewrite.org/v1beta/recipe
 
@@ -207,12 +206,10 @@ recipeList:
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.spring.migration.UpgradeToAzureSpringApps
-displayName: Migrate to Spring Apps
-description: Migrate to Spring Apps
+displayName: Migrate to Azure Spring Apps
+description: Migrate to Azure Spring Apps
 recipeList:
-  - com.azure.spring.migration.openrewrite.Springboot_2_x
-  - com.azure.spring.migration.openrewrite.SpringCloud_2021
-  - com.azure.spring.migration.openrewrite.WindowFilePath
+  - com.azure.spring.migration.openrewrite.WindowsFilePath
   - com.azure.spring.migration.openrewrite.FindFileScheme
   - com.azure.spring.migration.openrewrite.FileStorageApi
   - com.azure.spring.migration.openrewrite.AddCommentInLogging
@@ -220,6 +217,16 @@ recipeList:
   - com.azure.spring.migration.openrewrite.FindPassword
   - com.azure.spring.migration.openrewrite.JavaSystemLoad
   - com.azure.spring.migration.openrewrite.JavaSystemConfig
+
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.UpgradeSpringboot_2_7_SpringCloud_2021
+displayName: Migrate to Springboot_2_7 and SpringCloud_2021
+description: Migrate to Springboot_2_7 and SpringCloud_2021
+recipeList:
+  - com.azure.spring.migration.openrewrite.Springboot_2_x
+  - com.azure.spring.migration.openrewrite.SpringCloud_2021
 
 
 
