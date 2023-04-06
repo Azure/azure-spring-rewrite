@@ -95,7 +95,7 @@ Azure-spring-rewrite is released as a GitHub Maven package. To use it, you need 
    
    dependencies {
       rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:1.17.0"))
-      rewrite("com.azure.spring.migration:azure-spring-rewrite:0.1.1")
+      rewrite("com.azure.spring.migration:azure-spring-rewrite:0.2.0")
    }
    ```
 
