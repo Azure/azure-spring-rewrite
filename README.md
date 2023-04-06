@@ -27,7 +27,7 @@ The currently available list of check items includes:
 ## How to Use
 
 Azure-spring-rewrite is released as a GitHub Maven package. To use it, you need to perform two steps:
-1) Configure authentication with a personal access token.
+1) **Configure authentication with a personal access token**
 
    Go to your Maven settings file (by default, `$HOME/.m2/settings.xml`) and add the azure-spring-rewrite repository and your GitHub personal access token.
    You can refer to [authenticating-with-a-personal-access-token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-with-a-personal-access-token) for more information.
@@ -64,7 +64,7 @@ Azure-spring-rewrite is released as a GitHub Maven package. To use it, you need 
    ```
 
 
-2) Run rewrite plugin
+2) **Run rewrite plugin**
 
    For maven projects, you can run maven command line under your application path:
    ```cmd
@@ -99,5 +99,5 @@ Azure-spring-rewrite is released as a GitHub Maven package. To use it, you need 
    }
    ```
 
-   `-Drewrite.activeRecipes` in the Maven command line and `activeRecipe` in the Gradle file are the recipe lists you want to apply to your application.
-   You can configure it as you like by adding one or all of the defined recipes `com.azure.spring.migration.UpgradeToAzureSpringApps``com.azure.spring.migration.UpgradeSpringboot_2_7_SpringCloud_2021`, or adding official openrewrite recipes, e.g., `org.openrewrite.java.migrate.UpgradeToJava17`([reference page](https://docs.openrewrite.org/reference/recipes/java/migrate/upgradetojava17)).
+   You can **configure the recipes you want to apply to your application** by modifying the value of `-Drewrite.activeRecipes` in the Maven command line or `activeRecipe` in the Gradle file.
+   You can add one or all of the defined recipes `com.azure.spring.migration.UpgradeToAzureSpringApps` and `com.azure.spring.migration.UpgradeSpringboot_2_7_SpringCloud_2021`, or add official OpenRewrite recipes, such as `org.openrewrite.java.migrate.UpgradeToJava17` ([reference page](https://docs.openrewrite.org/reference/recipes/java/migrate/upgradetojava17)).
