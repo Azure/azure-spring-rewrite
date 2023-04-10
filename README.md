@@ -68,7 +68,7 @@ Azure-spring-rewrite is released as a GitHub Maven package. To use it, you need 
 
    For maven projects, you can run maven command line under your application path:
    ```cmd
-   ./mvnw -U -Pgithub org.openrewrite.maven:rewrite-maven-plugin:run "-Drewrite.activeRecipes=com.azure.spring.migration.UpgradeToAzureSpringApps, com.azure.spring.migration.UpgradeSpringboot_2_7_SpringCloud_2021" "-Drewrite.recipeArtifactCoordinates=com.azure.spring.migration:azure-spring-rewrite:LATEST"
+   ./mvnw -U -Pgithub org.openrewrite.maven:rewrite-maven-plugin:run "-Drewrite.activeRecipes=com.azure.spring.migration.UpgradeToAzureSpringApps,com.azure.spring.migration.UpgradeSpringboot_2_7_SpringCloud_2021" "-Drewrite.recipeArtifactCoordinates=com.azure.spring.migration:azure-spring-rewrite:LATEST"
    ```
    
    For gradle projects, you need to configure rewrite-gradle-plugin:
@@ -101,3 +101,4 @@ Azure-spring-rewrite is released as a GitHub Maven package. To use it, you need 
 
    You can **configure the recipes you want to apply to your application** by modifying the value of `-Drewrite.activeRecipes` in the Maven command line or `activeRecipe` in the Gradle file.
    You can add one or all of the defined recipes `com.azure.spring.migration.UpgradeToAzureSpringApps` and `com.azure.spring.migration.UpgradeSpringboot_2_7_SpringCloud_2021`, or add official OpenRewrite recipes, such as `org.openrewrite.java.migrate.UpgradeToJava17` ([reference page](https://docs.openrewrite.org/reference/recipes/java/migrate/upgradetojava17)).
+   For more details, refer to [rewrite Maven plugin configuration](https://docs.openrewrite.org/reference/rewrite-maven-plugin#plugin-configuration), [rewrite Gradle plugin configuration](https://docs.openrewrite.org/reference/gradle-plugin-configuration).
