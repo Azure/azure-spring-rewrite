@@ -21,6 +21,7 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.HasSourcePath;
 import org.openrewrite.Option;
+import org.openrewrite.Preconditions;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.lang.NonNull;
@@ -55,11 +56,6 @@ public class AddConsoleCommentInLogback extends Recipe {
         return "Adds a comment in a `XML` tag of matched attribute.";
     }
 
-    @Override
-    protected @NonNull TreeVisitor<?, ExecutionContext> getSingleSourceApplicableTest() {
-        return new HasSourcePath<>(fileMatcher);
-    }
-
     private boolean checkLogbackHasConsole(Xml.Tag tag) {
         return !XmlUtil.searchChildTag(tag, APPENDER_TAG_NAME) || XmlUtil.searchChildAttribute(tag, APPENDER_TAG_NAME, KEY_ATTRIBUTE.attributeName,
             KEY_ATTRIBUTE.attributeValueKeyword);
@@ -67,7 +63,7 @@ public class AddConsoleCommentInLogback extends Recipe {
 
     @Override
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new XmlVisitor<ExecutionContext>() {
+        return Preconditions.check(fileMatcher != null ? new HasSourcePath<>(fileMatcher) : TreeVisitor.noop(), new XmlVisitor<ExecutionContext>() {
             final CaseInsensitiveXPathMatcher configurationTagMatcher = new CaseInsensitiveXPathMatcher(CONFIGURATION_XPATH);
 
             @Override
@@ -80,6 +76,6 @@ public class AddConsoleCommentInLogback extends Recipe {
                 }
                 return t;
             }
-        };
+        });
     }
 }
