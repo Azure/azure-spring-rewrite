@@ -26,7 +26,7 @@ public final class FindMethodsTest implements RewriteTest {
     @Test
     void testFindMethods() {
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.io.File *(..)",true,null, "TODO ASA-FileStorageApi: need configuration to use storage")),
+                spec -> spec.recipe(new FindMethods("java.io.File *(..)",true, "TODO ASA-FileStorageApi: need configuration to use storage")),
                 java(
                         """
                               import java.io.File;
@@ -50,7 +50,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                spec -> spec.recipe(new FindMethods("java.lang.System getenv(..)",true, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                               public class LocalEnv {
@@ -70,7 +70,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System getProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                spec -> spec.recipe(new FindMethods("java.lang.System getProperty(..)",true, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                               public class LocalProperty {
@@ -90,7 +90,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System setProperties(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                spec -> spec.recipe(new FindMethods("java.lang.System setProperties(..)",true, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                               public class LocalProperty {
@@ -110,7 +110,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System setProperty(..)",true,null, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
+                spec -> spec.recipe(new FindMethods("java.lang.System setProperty(..)",true, "TODO ASA-JavaSystemConfig: need environment configuration in azure spring apps")),
                 java(
                         """
                                   public class LocalProperty {
@@ -130,7 +130,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
+                spec -> spec.recipe(new FindMethods("java.lang.System loadLibrary(..)",true, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
                 java(
                         """
                               public class LocalNative {
@@ -152,7 +152,7 @@ public final class FindMethodsTest implements RewriteTest {
         );
 
         rewriteRun(
-                spec -> spec.recipe(new FindMethods("java.lang.System load(..)",true,null, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
+                spec -> spec.recipe(new FindMethods("java.lang.System load(..)",true, "TODO ASA-JavaSystemLoad: need to mount your own storage and upload your binary code")),
                 java(
                         """
                               import java.io.File;
