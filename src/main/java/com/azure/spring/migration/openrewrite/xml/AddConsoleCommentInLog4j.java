@@ -24,6 +24,7 @@ import lombok.Value;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.HasSourcePath;
 import org.openrewrite.Option;
+import org.openrewrite.Preconditions;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
 import org.openrewrite.internal.lang.NonNull;
@@ -63,11 +64,6 @@ public class AddConsoleCommentInLog4j extends Recipe {
         return "Adds a comment in a `XML` tag of matched attribute.";
     }
 
-    @Override
-    protected TreeVisitor<?, ExecutionContext> getSingleSourceApplicableTest() {
-        return new HasSourcePath<>(fileMatcher);
-    }
-
 public boolean checkLog4j1HasConsole(Xml.Tag tag) {
     AttributeToFind log4j1KeyAttribute = ATTRIBUTE_MAP.get("log4j1");
     return !XmlUtil.searchChildTag(tag, APPENDER_TAG_NAME) || XmlUtil.searchChildAttribute(tag, APPENDER_TAG_NAME, log4j1KeyAttribute.attributeName, log4j1KeyAttribute.attributeValueKeyword);
@@ -81,7 +77,7 @@ public boolean checkLog4j2HasConsole(Xml.Tag tag) {
 
     @Override
     public @NonNull TreeVisitor<?, ExecutionContext> getVisitor() {
-        return new XmlVisitor<ExecutionContext>() {
+        return Preconditions.check(fileMatcher != null ? new HasSourcePath<>(fileMatcher) : TreeVisitor.noop(), new XmlVisitor<ExecutionContext>() {
             final CaseInsensitiveXPathMatcher log4j2AppendersTagMatcher = new CaseInsensitiveXPathMatcher(LOG4J2_APPENDERS_XPATH);
             final CaseInsensitiveXPathMatcher log4jConfigurationTagMatcher = new CaseInsensitiveXPathMatcher(LOG4J_CONFIGURATION_XPATH);
 
@@ -99,6 +95,6 @@ public boolean checkLog4j2HasConsole(Xml.Tag tag) {
                 }
                 return t;
             }
-        };
+        });
     }
 }
