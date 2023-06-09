@@ -75,7 +75,168 @@ tags:
   - azure
   - mordernize
 recipeList:
-  - org.openrewrite.java.spring.boot2.UpgradeSpringBoot_2_7
+  - com.azure.spring.migration.openrewrite.Springboot_2_6
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.7.x
+      overrideManagedVersion: false
+      retainVersions:
+        - mysql:mysql-connector-java
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.7.x
+      retainVersions:
+        - mysql:mysql-connector-java
+  # Use recommended replacements for deprecated APIs
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.web.server.LocalServerPort
+      newFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalServerPort
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.actuate.autoconfigure.web.server.LocalManagementPort
+      newFullyQualifiedTypeName: org.springframework.boot.test.web.server.LocalManagementPort
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.rsocket.context.LocalRSocketServerPort
+      newFullyQualifiedTypeName: org.springframework.boot.test.rsocket.server.LocalRSocketServerPort
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      newFullyQualifiedTypeName: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_7
+  # Switch MySQL driver artifactId
+  - org.openrewrite.maven.ChangeDependencyGroupIdAndArtifactId:
+      oldGroupId: mysql
+      oldArtifactId: mysql-connector-java
+      newGroupId: com.mysql
+      newArtifactId: mysql-connector-j
+      newVersion: 8.0.x
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.Springboot_2_6
+displayName: Migrate to Spring boot 2.6.X
+description:  >
+tags:
+  - spring boot
+  - azure
+  - mordernize
+recipeList:
+  - com.azure.spring.migration.openrewrite.Springboot_2_5
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.6.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.6.x
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_6
+
+  # Upgrade spring-cloud-dependencies release train
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.cloud
+      artifactId: "spring-cloud-dependencies"
+      newVersion: 2021.0.X
+      overrideManagedVersion: false
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.Springboot_2_5
+displayName: Migrate to Spring boot 2.5.X
+description:  >
+tags:
+  - spring boot
+  - azure
+  - mordernize
+recipeList:
+  - com.azure.spring.migration.openrewrite.Springboot_2_4
+  - org.openrewrite.java.spring.data.UpgradeSpringData_2_5
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.5.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.5.x
+  - org.openrewrite.java.spring.boot2.MigrateDatabaseCredentials
+
+  # Use recommended replacements for deprecated APIs
+  - org.openrewrite.java.spring.boot2.MigrateActuatorMediaTypeToApiVersion
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.data.jpa.EntityManagerFactoryDependsOnPostProcessor
+      newFullyQualifiedTypeName: org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryDependsOnPostProcessor
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: org.springframework.boot.autoconfigure.web.ResourceProperties
+      newFullyQualifiedTypeName: org.springframework.boot.autoconfigure.web.WebProperties$Resources
+
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_5
+
+  # Initialization ordering
+  - org.openrewrite.java.spring.boot2.DatabaseComponentAndBeanInitializationOrdering
+
+---
+########################################################################################################################
+# SpringBoot 2.5 Configuration Changes
+type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.spring.boot2.SpringBootProperties_2_5
+displayName: Migrate Spring Boot properties to 2.5
+description: Migrate properties found in `application.properties` and `application.yml`.
+recipeList:
+  - org.openrewrite.java.spring.ChangeSpringPropertyKey:
+      oldPropertyKey: spring.sql.init.enabled
+      newPropertyKey: spring.sql.init.mode
+  - org.openrewrite.java.spring.ChangeSpringPropertyKey:
+      oldPropertyKey: server.tomcat.internal-proxies
+      newPropertyKey: server.tomcat.remoteip.internal-proxies
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.Springboot_2_4
+displayName: Migrate to Spring boot 2.4.X
+description:  >
+tags:
+  - spring boot
+  - azure
+  - mordernize
+recipeList:
+  - org.openrewrite.java.spring.boot2.UpgradeSpringBoot_2_3
+  - org.openrewrite.java.spring.framework.UpgradeSpringFramework_5_3
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.4.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.4.x
+  - org.openrewrite.maven.RemoveExclusion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-test
+      exclusionGroupId: org.junit.vintage
+      exclusionArtifactId: junit-vintage-engine
+  - org.openrewrite.maven.RemoveExclusion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-test
+      exclusionGroupId: junit
+      exclusionArtifactId: junit
+
+  # Use recommended replacements for deprecated APIs
+  - org.openrewrite.java.spring.boot2.MigrateUndertowServletWebServerFactoryIsEagerInitFilters
+  - org.openrewrite.java.spring.boot2.MigrateUndertowServletWebServerFactorySetEagerInitFilters
+  - org.openrewrite.java.spring.boot2.MigrateLoggingSystemPropertyConstants
+  - org.openrewrite.java.spring.boot2.MigrateHsqlEmbeddedDatabaseConnection
+
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_4
+
+
+
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
