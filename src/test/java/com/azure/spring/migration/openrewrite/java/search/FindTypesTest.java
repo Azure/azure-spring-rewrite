@@ -16,12 +16,13 @@
 
 package com.azure.spring.migration.openrewrite.java.search;
 
-import static org.openrewrite.java.Assertions.java;
-
 import org.junit.jupiter.api.Test;
+import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RewriteTest;
 
+import static org.openrewrite.java.Assertions.java;
 public final class FindTypesTest implements RewriteTest {
+    @DocumentExample
     @Test
     void testFindTypes() {
         rewriteRun(
