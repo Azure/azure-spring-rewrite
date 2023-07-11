@@ -39,16 +39,122 @@ tags:
   - java-fileIO
 recipeList:
   - com.azure.spring.migration.openrewrite.java.search.FindMethods:
-      methodPattern: 'java.io.File *(..)'
+      methodPattern: 'java.io.File <constructor>(..)'
       matchOverrides: true
-      flow: null
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
-  - com.azure.spring.migration.openrewrite.java.search.FindTypes:
-      fullyQualifiedTypeName: java.io.LineNumber*
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.File createNewFile(..)'
+      matchOverrides: true
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
-  - com.azure.spring.migration.openrewrite.java.search.FindTypes:
-      fullyQualifiedTypeName: java.io.*File*
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.File createTempFile(..)'
+      matchOverrides: true
       mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.FileInputStream <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.FileOutputStream <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.FileReader <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.FileWriter <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedReader <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedWriter <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedReader read(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedReader readLine(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedWriter <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedWriter write(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.BufferedWriter newLine(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.InputStreamReader <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.OutputStreamWriter <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.ObjectInputStream <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.io.ObjectOutputStream <constructor>(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files createFile(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files createTempFile(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files readAllLines(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files readAllBytes(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files newBufferedReader(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files newInputStream(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files write(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files newBufferedWriter(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files newOutputStream(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files copy(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+  - com.azure.spring.migration.openrewrite.java.search.FindMethods:
+      methodPattern: 'java.nio.file.Files move(..)'
+      matchOverrides: true
+      mark: "TODO ASA-FileStorageApi: need configuration to use storage"
+
 ---
 type: specs.openrewrite.org/v1beta/recipe
 
@@ -176,23 +282,8 @@ recipeList:
   # Update properties
   - org.openrewrite.java.spring.boot2.SpringBootProperties_2_5
 
-  # Initialization ordering
-  - org.openrewrite.java.spring.boot2.DatabaseComponentAndBeanInitializationOrdering
-
----
-########################################################################################################################
-# SpringBoot 2.5 Configuration Changes
-type: specs.openrewrite.org/v1beta/recipe
-name: org.openrewrite.java.spring.boot2.SpringBootProperties_2_5
-displayName: Migrate Spring Boot properties to 2.5
-description: Migrate properties found in `application.properties` and `application.yml`.
-recipeList:
-  - org.openrewrite.java.spring.ChangeSpringPropertyKey:
-      oldPropertyKey: spring.sql.init.enabled
-      newPropertyKey: spring.sql.init.mode
-  - org.openrewrite.java.spring.ChangeSpringPropertyKey:
-      oldPropertyKey: server.tomcat.internal-proxies
-      newPropertyKey: server.tomcat.remoteip.internal-proxies
+#  # Initialization ordering
+#  - org.openrewrite.java.spring.boot2.DatabaseComponentAndBeanInitializationOrdering
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
@@ -204,7 +295,7 @@ tags:
   - azure
   - mordernize
 recipeList:
-  - org.openrewrite.java.spring.boot2.UpgradeSpringBoot_2_3
+  - com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_3
   - org.openrewrite.java.spring.framework.UpgradeSpringFramework_5_3
   - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
       groupId: org.springframework.boot
@@ -235,8 +326,157 @@ recipeList:
   # Update properties
   - org.openrewrite.java.spring.boot2.SpringBootProperties_2_4
 
+# SpringBoot 2.3
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_3
+displayName: Migrate to Spring Boot 2.3
+description: >
+  Migrate applications to the latest Spring Boot 2.3 release. This recipe will modify an
+  application's build files, make changes to deprecated/preferred APIs, and migrate configuration settings that have
+  changes between versions. This recipe will also chain additional framework migrations (Spring Framework, Spring Data,
+  etc) that are required as part of the migration to Spring Boot 2.3.
+tags:
+  - spring
+  - boot
+recipeList:
+  - com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_2
+  - org.openrewrite.java.spring.data.UpgradeSpringData_2_3
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.3.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.3.x
+  # https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3-Release-Notes#validation-starter-no-longer-included-in-web-starters
+  - org.openrewrite.java.dependencies.AddDependency:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-validation
+      version: 2.3.x
+      onlyIfUsing: javax.validation.constraints.*
+      acceptTransitive: true
 
+  # Use recommended replacements for deprecated APIs
+  - org.openrewrite.java.spring.boot2.MigrateRestClientBuilderCustomizerPackageName
+  - org.openrewrite.java.spring.boot2.MigrateErrorPropertiesIncludeStackTraceConstants
+  - org.openrewrite.java.spring.boot2.GetErrorAttributes
 
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_3
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_2
+displayName: Migrate to Spring Boot 2.2
+description: >
+  Migrate applications to the latest Spring Boot 2.2 release. This recipe will modify an
+  application's build files, make changes to deprecated/preferred APIs, and migrate configuration settings that have
+  changes between versions. This recipe will also chain additional framework migrations (Spring Framework, Spring Data,
+  etc) that are required as part of the migration to Spring Boot 2.2.
+tags:
+  - spring
+  - boot
+recipeList:
+  - com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_1
+  - org.openrewrite.java.spring.framework.UpgradeSpringFramework_5_2
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.2.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.2.x
+
+  # Use recommended replacements for deprecated APIs
+  - org.openrewrite.java.spring.boot2.MigrateApplicationHealthIndicatorToPingHealthIndicator
+  - org.openrewrite.java.spring.boot2.MigrateWebTestClientBuilderCustomizerPackageName
+  - org.openrewrite.java.spring.boot2.MigrateConfigurationPropertiesBindingPostProcessorValidatorBeanName
+
+  - org.openrewrite.java.spring.boot2.SpringBootMavenPluginMigrateAgentToAgents
+
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_2
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_1
+displayName: Migrate to Spring Boot 2.1
+description: >
+  Migrate applications to the latest Spring Boot 2.1 release. This recipe will modify an
+  application's build files, make changes to deprecated/preferred APIs, and migrate configuration settings that have
+  changes between versions. This recipe will also chain additional framework migrations (Spring Framework, Spring Data,
+  etc) that are required as part of the migration to Spring Boot 2.1.
+tags:
+  - spring
+  - boot
+recipeList:
+  - com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_0
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.1.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.1.x
+
+  # Use recommended replacements for deprecated APIs
+  - org.openrewrite.java.spring.boot2.MigrateRestTemplateBuilderBasicAuthorization
+  - org.openrewrite.java.spring.boot2.MigrateRestTemplateBuilderTimeoutByInt
+  - org.openrewrite.java.spring.boot2.MigrateMultipartConfigFactory
+
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_1
+
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.spring.migration.openrewrite.UpgradeSpringBoot_2_0
+displayName: Migrate to Spring Boot 2.0
+description: >
+  Migrate applications to the latest Spring Boot 2.0 release. This recipe will modify an
+  application's build files, make changes to deprecated/preferred APIs, and migrate configuration settings that have
+  changes between versions. This recipe will also chain additional framework migrations (Spring Framework, Spring Data,
+  etc) that are required as part of the migration to Spring Boot 2.0.
+tags:
+  - spring
+  - boot
+recipeList:
+  # Upgrade 2.0.x from 1.x
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.springframework.boot
+      artifactId: "*"
+      newVersion: 2.0.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.UpgradeParentVersion:
+      groupId: org.springframework.boot
+      artifactId: spring-boot-starter-parent
+      newVersion: 2.0.x
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.mockito
+      artifactId: "*"
+      newVersion: 3.x
+      overrideManagedVersion: false
+  - org.openrewrite.maven.RemoveProperty:
+      propertyName: thymeleaf.version
+  - org.openrewrite.java.dependencies.RemoveDependency:
+      groupId: org.webjars
+      artifactId: webjars-locator
+  - org.openrewrite.java.spring.boot2.MigrateToWebServerFactoryCustomizer
+  - org.openrewrite.java.spring.framework.UpgradeSpringFramework_5_0
+  - org.openrewrite.java.spring.boot2.MigrateSpringBootServletInitializerPackageName
+  - org.openrewrite.java.spring.boot2.MigrateHttpMessageConvertersPackageName
+  - org.openrewrite.java.spring.boot2.MigrateErrorControllerPackageName
+  - org.openrewrite.java.spring.boot2.MigrateHibernateConstraintsToJavax
+  - org.openrewrite.java.spring.boot2.MigrateLocalServerPortAnnotation
+  # Update properties
+  - org.openrewrite.java.spring.boot2.SpringBootProperties_2_0
+  - org.openrewrite.java.spring.boot2.SpringBoot2BestPractices
 
 ---
 type: specs.openrewrite.org/v1beta/recipe
